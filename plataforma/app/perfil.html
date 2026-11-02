@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Mi perfil — B-Civil</title>
+  <meta name="description" content="Consulta y edita tu información básica: nombre, información profesional y fotografía.">
+  <meta name="theme-color" content="#F4F3F0">
+
+  <link rel="icon" href="../img/icons/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../img/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../img/icons/favicon-16x16.png">
+  <link rel="manifest" href="../manifest.json">
+  <link rel="apple-touch-icon" href="../img/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="B-Civil">
+
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+  <link rel="stylesheet" href="../css/icons.css">
+  <link rel="stylesheet" href="../css/app-shell.css">
+  <link rel="stylesheet" href="../css/perfil.css">
+</head>
+<body class="app-body perfil-body">
+
+  <a class="skip-link" href="#contenido-principal">Saltar al contenido principal</a>
+
+  <div class="app-shell">
+
+    <header class="app-topbar">
+      <a class="app-topbar-home" href="dashboard.html" aria-label="Volver al inicio">
+        <span class="icon" data-icon="volver" aria-hidden="true"></span>
+      </a>
+      <div class="app-topbar-project">
+        <span class="app-topbar-eyebrow">Cuenta</span>
+        <h1 class="app-topbar-project-name">Mi perfil</h1>
+      </div>
+      <a class="icon-btn icon-btn--surface" href="configuracion.html" aria-label="Configuración">
+        <span class="icon" data-icon="configuracion" aria-hidden="true"></span>
+      </a>
+    </header>
+
+    <div class="app-content">
+      <main id="contenido-principal" class="app-main perfil-main">
+
+        <!-- Resumen con foto -->
+        <section class="card profile-hero" aria-labelledby="profile-summary-name">
+          <div class="profile-avatar">
+            <div class="profile-photo" id="profile-photo-container">
+              <span class="icon" data-icon="usuario" aria-hidden="true"></span>
+            </div>
+            <button type="button" class="profile-photo-edit" id="perfil-foto-btn" aria-label="Cambiar fotografía de perfil">
+              <span class="icon" data-icon="fotografia" aria-hidden="true"></span>
+            </button>
+          </div>
+          <p class="profile-summary-name" id="profile-summary-name">Cargando…</p>
+          <p class="profile-summary-role" id="profile-summary-role"></p>
+          <p class="profile-summary-email" id="profile-summary-email"></p>
+        </section>
+
+        <!-- Edición -->
+        <section class="card profile-edit" aria-labelledby="profile-edit-titulo">
+          <h2 id="profile-edit-titulo">Información básica</h2>
+          <p class="form-hint">Tu nombre y cargo aparecen en el Inicio y en tu cuenta.</p>
+
+          <form class="profile-form" id="profile-form" novalidate>
+
+            <div class="form-field">
+              <label for="perfil-nombre">Nombre completo</label>
+              <input type="text" id="perfil-nombre" name="nombre" autocomplete="name">
+            </div>
+
+            <div class="form-row">
+              <div class="form-field">
+                <label for="perfil-cargo">Cargo o profesión</label>
+                <input type="text" id="perfil-cargo" name="cargo" placeholder="Ej. Ingeniero residente" autocomplete="organization-title">
+              </div>
+              <div class="form-field">
+                <label for="perfil-empresa">Empresa (opcional)</label>
+                <input type="text" id="perfil-empresa" name="empresa" placeholder="Ej. Constructora Ejemplo S.A.S." autocomplete="organization">
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label for="perfil-correo">Correo electrónico</label>
+              <input type="email" id="perfil-correo" name="correo" disabled>
+              <p class="form-field-note">Cambiar el correo requiere una verificación aparte, disponible próximamente.</p>
+            </div>
+
+            <div class="form-field">
+              <label for="perfil-foto">Fotografía de perfil (opcional)</label>
+              <div class="profile-photo-field">
+                <button type="button" class="pill-btn" id="perfil-foto-elegir">
+                  <span class="icon" data-icon="fotografia" aria-hidden="true"></span>
+                  Elegir fotografía
+                </button>
+                <span class="profile-photo-field-name" id="perfil-foto-nombre">Ningún archivo seleccionado</span>
+                <input type="file" id="perfil-foto" name="foto" accept="image/*" class="visually-hidden">
+              </div>
+            </div>
+
+            <div class="profile-actions">
+              <button type="button" class="btn btn-secondary btn-lg" id="perfil-cancelar">Cancelar</button>
+              <button type="submit" class="btn btn-primary btn-lg" id="perfil-guardar">Guardar cambios</button>
+            </div>
+
+          </form>
+        </section>
+
+        <!-- Cuenta: accesos directos y cerrar sesión -->
+        <section class="card profile-account" aria-labelledby="profile-account-titulo">
+          <h2 id="profile-account-titulo">Cuenta</h2>
+          <a class="profile-account-link" href="configuracion.html">
+            <span class="icon" data-icon="configuracion" aria-hidden="true"></span>
+            <span>Configuración y membrete</span>
+            <span class="icon profile-account-arrow" data-icon="flecha" aria-hidden="true"></span>
+          </a>
+          <a class="profile-account-link" href="papelera/papelera.html">
+            <span class="icon" data-icon="papelera" aria-hidden="true"></span>
+            <span>Papelera</span>
+            <span class="icon profile-account-arrow" data-icon="flecha" aria-hidden="true"></span>
+          </a>
+          <button type="button" class="btn btn-secondary btn-lg btn-block settings-danger-btn profile-signout" id="perfil-cerrar-sesion">
+            <span class="icon" data-icon="cerrar-sesion" aria-hidden="true"></span>
+            Cerrar sesión
+          </button>
+        </section>
+
+      </main>
+    </div>
+
+    <nav class="app-nav" id="app-nav" aria-label="Navegación principal">
+      <ul class="app-nav-list">
+        <li class="app-nav-item">
+          <a class="app-nav-link" href="dashboard.html" title="Inicio">
+            <span class="icon" data-icon="inicio" aria-hidden="true"></span>
+            <span class="app-nav-label">Inicio</span>
+          </a>
+        </li>
+        <li class="app-nav-item">
+          <a class="app-nav-link" href="bitacora/bitacora.html" title="Bitácora">
+            <span class="icon" data-icon="bitacora" aria-hidden="true"></span>
+            <span class="app-nav-label">Bitácora</span>
+          </a>
+        </li>
+        <li class="app-nav-item">
+          <a class="app-nav-link" href="proyectos/index.html" title="Proyectos">
+            <span class="icon" data-icon="proyectos" aria-hidden="true"></span>
+            <span class="app-nav-label">Proyectos</span>
+          </a>
+        </li>
+        <li class="app-nav-item">
+          <a class="app-nav-link" href="documentos/documentos.html" title="Documentos">
+            <span class="icon" data-icon="documentos" aria-hidden="true"></span>
+            <span class="app-nav-label">Documentos</span>
+          </a>
+        </li>
+        <li class="app-nav-item">
+          <a class="app-nav-link" href="chat/asistente.html" title="Asistente">
+            <span class="icon" data-icon="asistente" aria-hidden="true"></span>
+            <span class="app-nav-label">Asistente</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+  </div>
+
+  <script type="module" src="../js/perfil.js" defer></script>
+  <script type="module" src="../js/sw-register.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,941 @@
+/* ==========================================================================
+   BITACORA.CSS — Bitácora
+   Resumen de la semana, búsqueda y filtros en pastillas, y línea de
+   tiempo vertical: un punto de color por tipo de registro sobre la
+   línea, y cada registro como tarjeta blanca.
+
+   Teléfono primero: todo en una columna, filtros desplazables en
+   horizontal, rango de fechas plegado. En pantallas grandes la columna
+   se limita a un ancho cómodo de lectura.
+   ========================================================================== */
+
+.bitacora-body {
+  --page-max: 46rem;
+}
+
+/* --------------------------------------------------------------------------
+   CABECERA: botón Exportar
+   -------------------------------------------------------------------------- */
+.bitacora-export-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-shrink: 0;
+  height: 2.75rem;
+  padding: 0 1rem 0 0.85rem;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-ink);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-sm);
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.12s ease;
+}
+
+.bitacora-export-btn:active {
+  transform: scale(0.95);
+}
+
+.bitacora-export-btn .icon {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+/* Teléfono angosto: solo el ícono, para que el nombre del proyecto respire */
+@media (max-width: 379px) {
+  .bitacora-export-btn {
+    width: 2.75rem;
+    padding: 0;
+    justify-content: center;
+  }
+
+  .bitacora-export-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   AVISO DE SIN CONEXIÓN (lo inserta timeline.js)
+   -------------------------------------------------------------------------- */
+.offline-data-banner {
+  position: sticky;
+  top: 0;
+  z-index: 65;
+  padding: calc(0.6rem + env(safe-area-inset-top, 0px)) var(--space-4) 0.6rem;
+  text-align: center;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--color-accent-ink);
+  background-color: var(--color-accent-soft);
+}
+
+/* --------------------------------------------------------------------------
+   RESUMEN DE LA SEMANA
+   -------------------------------------------------------------------------- */
+.bitacora-summary {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+  padding: var(--space-4) var(--space-4) var(--space-4) var(--space-5);
+}
+
+.bitacora-summary-hero {
+  display: flex;
+  flex-direction: column;
+}
+
+.bitacora-summary-hero .stat-number {
+  font-size: clamp(2.5rem, 12vw, 3.5rem);
+}
+
+.bitacora-summary-hero .stat-label {
+  max-width: 7.5rem;
+  margin-top: 0.15rem;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+/* Teléfono: los dos datos apilados a la derecha del número */
+.bitacora-summary-side {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 6px;
+}
+
+.bitacora-summary-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0.5rem 0.75rem 0.5rem 0.5rem;
+  background-color: var(--color-paper);
+  border-radius: 16px;
+  min-width: 0;
+}
+
+.bitacora-summary-item .icon-badge {
+  width: 2rem;
+  height: 2rem;
+  background-color: var(--color-surface);
+}
+
+.bitacora-summary-item .icon-badge .icon {
+  width: 0.95rem;
+  height: 0.95rem;
+}
+
+.bitacora-summary-item > span:last-child {
+  min-width: 0;
+}
+
+.bitacora-summary-value {
+  display: block;
+  font-size: var(--text-base);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.bitacora-summary-label {
+  display: block;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--color-ink-soft);
+}
+
+/* --------------------------------------------------------------------------
+   BÚSQUEDA Y FILTROS
+   -------------------------------------------------------------------------- */
+.bitacora-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+.search-form {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-form-icon {
+  position: absolute;
+  left: 1.1rem;
+  width: 1.15rem;
+  height: 1.15rem;
+  color: var(--color-ink-soft);
+  pointer-events: none;
+}
+
+.search-form input[type="search"] {
+  width: 100%;
+  min-height: 3.25rem;
+  padding: 0.8rem 1rem 0.8rem 3rem;
+  font-size: var(--text-base); /* 16px: sin zoom automático en iOS */
+  color: var(--color-ink);
+  background-color: var(--color-surface);
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-sm);
+  -webkit-appearance: none;
+          appearance: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.search-form input[type="search"]::placeholder {
+  color: var(--color-ink-faint);
+}
+
+.search-form input[type="search"]:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 4px var(--color-accent-soft);
+}
+
+.search-form input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  background: var(--color-paper-alt)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236A6D75' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M7 7l10 10M17 7 7 17'/%3E%3C/svg%3E")
+    center / 0.65rem no-repeat;
+  cursor: pointer;
+}
+
+.period-selector {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* Pastillas de período: más discretas que las de tipo */
+.filter-chip--quiet {
+  min-height: 2.25rem;
+  padding: 0.4rem 0.9rem;
+  font-size: var(--text-xs);
+  background-color: transparent;
+  box-shadow: inset 0 0 0 1px var(--color-line-strong);
+}
+
+.filter-chip--quiet.is-active,
+.filter-chip--quiet[aria-pressed="true"] {
+  color: var(--color-accent-ink);
+  background-color: var(--color-accent-soft);
+  box-shadow: inset 0 0 0 1px rgba(242, 106, 33, 0.35);
+}
+
+/* Rango de fechas plegable */
+.period-custom {
+  border-radius: 18px;
+}
+
+.period-custom summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 2.25rem;
+  padding: 0.4rem 0.9rem;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-ink-soft);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  list-style: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.period-custom summary::-webkit-details-marker {
+  display: none;
+}
+
+.period-custom summary .icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.period-custom[open] summary {
+  color: var(--color-ink);
+}
+
+.period-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+  padding: var(--space-4);
+  background-color: var(--color-surface);
+  border-radius: 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+.period-form .form-field {
+  margin-bottom: 0;
+  min-width: 0;
+}
+
+.period-form label {
+  font-size: var(--text-xs);
+  color: var(--color-ink-soft);
+}
+
+.period-form input[type="date"] {
+  min-height: 3rem;
+  padding: 0.6rem 0.75rem;
+  font-size: var(--text-base);
+  background-color: var(--color-paper);
+  border-color: transparent;
+}
+
+.period-form .btn {
+  grid-column: 1 / -1;
+}
+
+/* --------------------------------------------------------------------------
+   LÍNEA DE TIEMPO — DÍAS
+   -------------------------------------------------------------------------- */
+.day-group {
+  margin-bottom: var(--space-5);
+}
+
+.day-group-heading {
+  position: sticky;
+  top: calc(var(--app-topbar-height) + env(safe-area-inset-top, 0px) - 0.25rem);
+  z-index: 20;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.15rem 0.5rem;
+  margin: 0 calc(var(--space-4) * -1) var(--space-3);
+  padding: var(--space-2) var(--space-4);
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  color: var(--color-ink);
+  background-color: rgba(244, 243, 240, 0.9);
+  backdrop-filter: saturate(160%) blur(12px);
+  -webkit-backdrop-filter: saturate(160%) blur(12px);
+}
+
+.day-group-heading time {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--color-ink-soft);
+}
+
+.day-group-count {
+  margin-left: auto;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0;
+  color: var(--color-ink-soft);
+}
+
+/* --------------------------------------------------------------------------
+   LÍNEA DE TIEMPO — REGISTROS
+   La línea vertical va a la izquierda; cada registro es una tarjeta con
+   su punto de color sobre la línea.
+   -------------------------------------------------------------------------- */
+.day-entries {
+  --rail: 0.6875rem;          /* posición de la línea */
+  --gutter: 1.75rem;          /* espacio entre la línea y la tarjeta */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-left: var(--gutter);
+  margin: 0;
+}
+
+.day-entries::before {
+  content: "";
+  position: absolute;
+  top: 1.4rem;
+  bottom: 1.4rem;
+  left: var(--rail);
+  width: 2px;
+  margin-left: -1px;
+  border-radius: 2px;
+  background-color: var(--color-line-strong);
+}
+
+.log-entry {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: var(--space-4) var(--space-4) var(--space-4);
+  background-color: var(--color-surface);
+  border-radius: 22px;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.15s ease;
+  animation: entry-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.log-entry:active {
+  transform: scale(0.99);
+}
+
+@keyframes entry-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Punto sobre la línea: anillo de color según el tipo */
+.log-entry::before {
+  content: "";
+  position: absolute;
+  top: 1.15rem;
+  left: calc((var(--gutter) - var(--rail)) * -1 - 7px);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: var(--color-surface);
+  border: 4px solid var(--color-ink);
+  box-shadow: 0 0 0 4px var(--color-paper);
+}
+
+.log-entry[data-tipo="fotografia"]::before {
+  border-color: var(--color-accent);
+}
+
+.log-entry[data-tipo="nota-voz"]::before {
+  border-color: #9A9DA4;
+}
+
+.log-entry[data-tipo="ensayo"]::before {
+  border-color: var(--color-success);
+}
+
+.log-entry[data-tipo="sst"]::before {
+  border-color: var(--color-danger);
+}
+
+.log-entry[data-tipo="avance"]::before {
+  border-color: #4B4F58;
+}
+
+/* Hora: arriba a la derecha, junto a la flecha */
+.log-entry-time {
+  position: absolute;
+  top: 1.35rem;
+  right: 4rem;
+  line-height: 1;
+}
+
+.log-entry-time time {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.log-entry-body {
+  min-width: 0;
+}
+
+/* Tipo: pastilla con ícono */
+.log-entry-type {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  max-width: calc(100% - 9rem);
+  margin-bottom: var(--space-3);
+  padding: 0.35rem 0.7rem 0.35rem 0.55rem;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--color-ink);
+  background-color: var(--color-paper);
+  border-radius: var(--radius-pill);
+}
+
+.log-entry[data-tipo="fotografia"] .log-entry-type {
+  color: var(--color-accent-ink);
+  background-color: var(--color-accent-soft);
+}
+
+.log-entry[data-tipo="ensayo"] .log-entry-type {
+  color: var(--color-success);
+  background-color: var(--color-success-soft);
+}
+
+.log-entry[data-tipo="sst"] .log-entry-type {
+  color: var(--color-danger);
+  background-color: var(--color-danger-soft);
+}
+
+/* Etiquetas del registro y estado del ensayo */
+.log-entry-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: var(--space-2);
+}
+
+.log-entry-tag,
+.log-entry-estado {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.6rem;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--color-ink-soft);
+  background-color: var(--color-paper);
+  border-radius: var(--radius-pill);
+}
+
+.log-entry-tag[data-etiqueta="Calidad"] {
+  color: var(--color-success);
+  background-color: var(--color-success-soft);
+}
+
+.log-entry-tag[data-etiqueta="SST"] {
+  color: var(--color-danger);
+  background-color: var(--color-danger-soft);
+}
+
+.log-entry-estado[data-estado="cumple"] {
+  color: #FFFFFF;
+  background-color: var(--color-success);
+}
+
+.log-entry-estado[data-estado="no-cumple"] {
+  color: #FFFFFF;
+  background-color: var(--color-danger);
+}
+
+.log-entry-estado[data-estado="pendiente"] {
+  color: var(--color-accent-ink);
+  background-color: var(--color-accent-soft);
+}
+
+.log-entry-icon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+}
+
+.log-entry-text {
+  font-size: var(--text-base);
+  line-height: 1.5;
+  color: var(--color-ink);
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.log-entry-text:empty {
+  display: none;
+}
+
+/* Datos estructurados: clima, personal, maquinaria */
+.log-entry-meta-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.log-entry-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.log-entry-meta-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.7rem;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-ink);
+  background-color: var(--color-paper);
+  border-radius: var(--radius-pill);
+}
+
+.log-entry-meta-chip[data-campo="Maquinaria en obra"] {
+  color: var(--color-accent-ink);
+  background-color: var(--color-accent-soft);
+}
+
+.log-entry-observaciones {
+  margin-top: var(--space-2);
+  padding-left: var(--space-3);
+  border-left: 2px solid var(--color-line-strong);
+  font-size: var(--text-sm);
+  color: var(--color-ink-soft);
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.log-entry-meta-wrapper .log-entry-observaciones {
+  margin-top: 0;
+}
+
+/* "Ver detalle": círculo con flecha arriba a la derecha.
+   El texto se conserva para lectores de pantalla. */
+.log-entry .entry-detail-trigger {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin: 0;
+  padding: 0;
+  font-size: 0;
+  color: transparent;
+  background-color: var(--color-paper);
+  border: 0;
+  border-radius: 50%;
+  transition: background-color 0.15s ease;
+}
+
+.log-entry .entry-detail-trigger::before {
+  content: "";
+  width: 1rem;
+  height: 1rem;
+  background-color: var(--color-ink);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 17 17 7'/%3E%3Cpath d='M8.5 7H17v8.5'/%3E%3C/svg%3E") center / contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 17 17 7'/%3E%3Cpath d='M8.5 7H17v8.5'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.log-entry .entry-detail-trigger:hover {
+  background-color: var(--color-paper-alt);
+}
+
+/* --------------------------------------------------------------------------
+   FOTOGRAFÍAS EN LA TARJETA
+   -------------------------------------------------------------------------- */
+.entry-photos {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin-top: var(--space-3);
+}
+
+.photo-placeholder {
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 14px;
+  background-color: var(--color-paper);
+  color: var(--color-ink-faint);
+}
+
+.photo-placeholder img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Una sola foto: ocupa todo el ancho */
+.entry-photos .photo-placeholder:only-child {
+  grid-column: 1 / -1;
+  aspect-ratio: 16 / 10;
+}
+
+/* Dos fotos: mitad y mitad */
+.entry-photos .photo-placeholder:first-child:nth-last-child(2),
+.entry-photos .photo-placeholder:first-child:nth-last-child(2) ~ .photo-placeholder {
+  grid-column: span 1;
+}
+
+.entry-photos:has(> .photo-placeholder:first-child:nth-last-child(2)) {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+/* --------------------------------------------------------------------------
+   NOTA DE VOZ
+   -------------------------------------------------------------------------- */
+.audio-placeholder {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  padding: 0.35rem 0.85rem 0.35rem 0.35rem;
+  background-color: var(--color-paper);
+  border-radius: var(--radius-pill);
+}
+
+.audio-placeholder audio {
+  flex: 1;
+  min-width: 0;
+  height: 2.5rem;
+}
+
+.audio-placeholder-duration {
+  flex-shrink: 0;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--color-ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.audio-placeholder-duration:empty {
+  display: none;
+}
+
+/* --------------------------------------------------------------------------
+   ESTADOS VACÍOS
+   -------------------------------------------------------------------------- */
+.bitacora-empty {
+  margin-top: var(--space-2);
+}
+
+.bitacora-empty .icon-badge {
+  margin-bottom: var(--space-1);
+}
+
+.bitacora-empty .eyebrow {
+  margin-bottom: 0;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--color-accent-ink);
+}
+
+.bitacora-empty .btn {
+  margin-top: var(--space-3);
+}
+
+/* --------------------------------------------------------------------------
+   DETALLE DE UN REGISTRO
+   Teléfono: hoja inferior (modal de components.css).
+   Tablet y escritorio: panel a la derecha, con la lista visible detrás.
+   -------------------------------------------------------------------------- */
+.entry-detail-dialog #entry-detail-fecha {
+  margin-bottom: var(--space-1);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--color-ink-soft);
+  padding-right: 5rem;
+}
+
+.entry-detail-dialog #entry-detail-titulo {
+  margin-bottom: var(--space-4);
+  font-size: var(--text-xl);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+
+.entry-detail-text {
+  font-size: var(--text-base);
+  line-height: 1.55;
+  color: var(--color-ink);
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.entry-detail-dialog .log-entry-meta-wrapper {
+  margin-bottom: var(--space-4);
+}
+
+.entry-detail-photos {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-2);
+  margin-block: var(--space-4);
+}
+
+.entry-detail-photos .photo-placeholder {
+  aspect-ratio: 4 / 3;
+  border-radius: 18px;
+}
+
+/* --------------------------------------------------------------------------
+   TABLET (640px en adelante)
+   -------------------------------------------------------------------------- */
+@media (min-width: 640px) {
+  .bitacora-summary {
+    gap: var(--space-6);
+    padding: var(--space-5) var(--space-5) var(--space-5) var(--space-6);
+  }
+
+  .bitacora-summary-side {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-2);
+  }
+
+  .bitacora-summary-item {
+    padding: var(--space-3);
+  }
+
+  .bitacora-summary-item .icon-badge {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .bitacora-summary-value {
+    font-size: var(--text-md);
+  }
+
+  .bitacora-summary-label {
+    font-size: var(--text-xs);
+  }
+
+  .period-selector {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+
+  .period-selector > .filter-group {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .period-custom {
+    position: relative;
+  }
+
+  .period-custom .period-form {
+    position: absolute;
+    right: 0;
+    z-index: 30;
+    width: 20rem;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .day-entries {
+    --rail: 0.875rem;
+    --gutter: 2.25rem;
+  }
+
+  .log-entry {
+    padding: var(--space-5);
+  }
+
+  .log-entry .entry-detail-trigger {
+    top: 1rem;
+    right: 1rem;
+  }
+
+  .log-entry-time {
+    top: 1.75rem;
+    right: 4.5rem;
+  }
+
+  .log-entry::before {
+    top: 1.55rem;
+  }
+
+  /* Foto única: altura contenida en pantallas grandes */
+  .entry-photos .photo-placeholder:only-child {
+    max-height: 22rem;
+  }
+
+  .entry-detail-photos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .entry-detail-photos .photo-placeholder:only-child {
+    grid-column: 1 / -1;
+  }
+
+  /* Panel lateral derecho */
+  .entry-detail-overlay.modal-overlay {
+    justify-content: flex-end;
+    align-items: stretch;
+    padding: var(--space-3);
+  }
+
+  .entry-detail-dialog.modal-dialog {
+    width: 100%;
+    max-width: 28rem;
+    max-height: none;
+    height: auto;
+    margin: 0;
+    padding-top: var(--space-6);
+    border-radius: 28px;
+    overflow-y: auto;
+    animation: detail-panel-in 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .entry-detail-dialog.modal-dialog::before {
+    display: none;
+  }
+
+  @keyframes detail-panel-in {
+    from { opacity: 0; transform: translateX(24px); }
+    to { opacity: 1; transform: none; }
+  }
+}
+
+/* --------------------------------------------------------------------------
+   TELÉFONO ANGOSTO
+   -------------------------------------------------------------------------- */
+@media (max-width: 359px) {
+  .bitacora-summary {
+    gap: var(--space-3);
+    padding-left: var(--space-4);
+  }
+
+  .log-entry {
+    padding: var(--space-3);
+  }
+
+  .log-entry-type {
+    max-width: calc(100% - 8rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .log-entry,
+  .entry-detail-dialog.modal-dialog {
+    animation: none;
+  }
+}
+
+/* ==========================================================================
+   TRAZABILIDAD: registros anexados y editados — Etapa 4
+   ========================================================================== */
+.log-entry-traza {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.6rem;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--color-ink-soft);
+  background-color: var(--color-paper);
+  border: 1px dashed var(--color-line-strong);
+  border-radius: var(--radius-pill);
+}
+
+.log-entry-traza[data-traza="anexado"] {
+  color: var(--color-accent-ink);
+  background-color: var(--color-accent-soft);
+  border-color: transparent;
+}
+
+.entry-detail-traza {
+  margin-top: var(--space-1);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-ink-soft);
+}
+
+#entry-detail-edit-fecha {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Configuración — B-Civil</title>
+  <meta name="description" content="Configura tu cuenta, preferencias, privacidad, gestión de datos y seguridad.">
+  <meta name="theme-color" content="#F4F3F0">
+
+  <link rel="icon" href="../img/icons/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../img/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../img/icons/favicon-16x16.png">
+  <link rel="manifest" href="../manifest.json">
+  <link rel="apple-touch-icon" href="../img/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="B-Civil">
+
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+  <link rel="stylesheet" href="../css/icons.css">
+  <link rel="stylesheet" href="../css/app-shell.css">
+  <link rel="stylesheet" href="../css/configuracion.css">
+</head>
+<body class="app-body config-body">
+
+  <a class="skip-link" href="#contenido-principal">Saltar al contenido principal</a>
+
+  <div class="app-shell">
+
+    <header class="app-topbar">
+      <a class="app-topbar-home" href="dashboard.html" aria-label="Volver al inicio">
+        <span class="icon" data-icon="volver" aria-hidden="true"></span>
+      </a>
+      <div class="app-topbar-project">
+        <span class="app-topbar-eyebrow">Cuenta</span>
+        <h1 class="app-topbar-project-name">Configuración</h1>
+      </div>
+    </header>
+
+    <div class="app-content">
+      <main id="contenido-principal" class="app-main config-main">
+
+        <div class="settings-list">
+
+          <!-- Cuenta -->
+          <section class="settings-section" aria-labelledby="settings-cuenta-titulo">
+            <h2 id="settings-cuenta-titulo">Cuenta</h2>
+            <div class="card settings-group">
+              <a class="settings-row settings-row--link" href="perfil.html">
+                <span class="icon-badge"><span class="icon" data-icon="usuario" aria-hidden="true"></span></span>
+                <span class="settings-row-info">
+                  <span class="settings-row-label">Mi perfil</span>
+                  <span class="settings-row-desc" id="config-nombre-correo">Cargando…</span>
+                </span>
+                <span class="settings-chevron" aria-hidden="true"></span>
+              </a>
+            </div>
+          </section>
+
+          <!-- Preferencias -->
+          <section class="settings-section" aria-labelledby="settings-preferencias-titulo">
+            <h2 id="settings-preferencias-titulo">Preferencias</h2>
+            <div class="card settings-group">
+              <div class="settings-row">
+                <span class="icon-badge"><span class="icon" data-icon="asistente" aria-hidden="true"></span></span>
+                <span class="settings-row-info">
+                  <label class="settings-row-label" for="config-idioma">Idioma</label>
+                  <span class="settings-row-desc">Idioma de la plataforma</span>
+                </span>
+                <select id="config-idioma" name="idioma" class="settings-select">
+                  <option value="es" selected>Español</option>
+                </select>
+              </div>
+
+              <div class="settings-row">
+                <span class="icon-badge"><span class="icon" data-icon="campana" aria-hidden="true"></span></span>
+                <span class="settings-row-info">
+                  <span class="settings-row-label" id="config-notificaciones-label">Notificaciones por correo</span>
+                  <span class="settings-row-desc">Avisos importantes de tus proyectos</span>
+                </span>
+                <label class="settings-toggle">
+                  <input type="checkbox" id="config-notificaciones" name="notificaciones" role="switch" aria-labelledby="config-notificaciones-label">
+                  <span class="settings-toggle-track" aria-hidden="true"></span>
+                </label>
+              </div>
+            </div>
+          </section>
+
+          <!-- Documentos: membrete con el logo de la empresa -->
+          <section class="settings-section" id="membrete" aria-labelledby="settings-documentos-titulo">
+            <h2 id="settings-documentos-titulo">Documentos</h2>
+            <div class="card settings-group">
+              <div class="settings-row">
+                <span class="settings-logo-thumb" id="membrete-thumb" aria-hidden="true">
+                  <span class="icon" data-icon="documento"></span>
+                </span>
+                <span class="settings-row-info">
+                  <span class="settings-row-label">Membrete de documentos</span>
+                  <span class="settings-row-desc" id="membrete-estado">Logo y datos de tu empresa en los PDF y Word</span>
+                </span>
+                <button type="button" class="pill-btn" id="btn-membrete">Configurar</button>
+              </div>
+            </div>
+          </section>
+
+          <!-- Privacidad y datos -->
+          <section class="settings-section" aria-labelledby="settings-privacidad-titulo">
+            <h2 id="settings-privacidad-titulo">Privacidad y datos</h2>
+            <p class="settings-section-text">Tus proyectos y registros son privados: solo tu cuenta puede acceder a ellos.</p>
+            <div class="card settings-group">
+              <a class="settings-row settings-row--link" href="../legal/privacidad.html" id="link-politica-privacidad" target="_blank" rel="noopener">
+                <span class="icon-badge"><span class="icon" data-icon="documento" aria-hidden="true"></span></span>
+                <span class="settings-row-info">
+                  <span class="settings-row-label">Política de privacidad</span>
+                  <span class="settings-row-desc">Cómo se protege tu información</span>
+                </span>
+                <span class="settings-chevron settings-chevron--external" aria-hidden="true"></span>
+              </a>
+
+              <div class="settings-row">
+                <span class="icon-badge"><span class="icon" data-icon="descargar" aria-hidden="true"></span></span>
+                <span class="settings-row-info">
+                  <span class="settings-row-label" id="settings-datos-titulo">Exportar mis datos</span>
+                  <span class="settings-row-desc">Proyectos y registros en un archivo</span>
+                </span>
+                <button type="button" class="pill-btn" id="btn-exportar-datos">Exportar</button>
+              </div>
+
+              <a class="settings-row settings-row--link" href="papelera/papelera.html">
+                <span class="icon-badge"><span class="icon" data-icon="papelera" aria-hidden="true"></span></span>
+                <span class="settings-row-info">
+                  <span class="settings-row-label">Papelera</span>
+                  <span class="settings-row-desc">Proyectos eliminados en los últimos 15 días</span>
+                </span>
+                <span class="settings-chevron" aria-hidden="true"></span>
+              </a>
+            </div>
+          </section>
+
+          <!-- Seguridad -->
+          <section class="settings-section" aria-labelledby="settings-seguridad-titulo">
+            <h2 id="settings-seguridad-titulo">Seguridad</h2>
+            <div class="card settings-group">
+              <div class="settings-row">
+                <span class="icon-badge"><span class="icon" data-icon="configuracion" aria-hidden="true"></span></span>
+                <span class="settings-row-info">
+                  <span class="settings-row-label">Contraseña</span>
+                  <span class="settings-row-desc">Actualiza la contraseña de tu cuenta</span>
+                </span>
+                <button type="button" class="pill-btn" id="btn-cambiar-password">Cambiar</button>
+              </div>
+            </div>
+          </section>
+
+          <!-- Cerrar sesión -->
+          <section class="settings-section settings-section--signout" aria-labelledby="settings-sesion-titulo">
+            <h2 id="settings-sesion-titulo" class="visually-hidden">Cerrar sesión</h2>
+            <button type="button" class="btn btn-secondary btn-lg btn-block settings-danger-btn" id="btn-cerrar-sesion">
+              <span class="icon" data-icon="cerrar-sesion" aria-hidden="true"></span>
+              Cerrar sesión
+            </button>
+            <p class="settings-footnote">B-Civil · Ingeniería · Construcción</p>
+          </section>
+
+        </div>
+
+      </main>
+    </div>
+
+    <nav class="app-nav" id="app-nav" aria-label="Navegación principal">
+      <ul class="app-nav-list">
+        <li class="app-nav-item">
+          <a class="app-nav-link" href="dashboard.html" title="Inicio">
+            <span class="icon" data-icon="inicio" aria-hidden="true"></span>
+            <span class="app-nav-label">Inicio</span>
+          </a>
+        </li>
+        <li class="app-nav-item">
+          <a class="app-nav-link" href="bitacora/bitacora.html" title="Bitácora">
+            <span class="icon" data-icon="bitacora" aria-hidden="true"></span>
+            <span class="app-nav-label">Bitácora</span>
+          </a>
+        </li>
+        <li class="app-nav-item">
+          <a class="app-nav-link" href="proyectos/index.html" title="Proyectos">
+            <span class="icon" data-icon="proyectos" aria-hidden="true"></span>
+            <span class="app-nav-label">Proyectos</span>
+          </a>
+        </li>
+        <li class="app-nav-item">
+          <a class="app-nav-link" href="documentos/documentos.html" title="Documentos">
+            <span class="icon" data-icon="documentos" aria-hidden="true"></span>
+            <span class="app-nav-label">Documentos</span>
+          </a>
+        </li>
+        <li class="app-nav-item">
+          <a class="app-nav-link" href="chat/asistente.html" title="Asistente">
+            <span class="icon" data-icon="asistente" aria-hidden="true"></span>
+            <span class="app-nav-label">Asistente</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+  </div>
+
+  <script type="module" src="../js/configuracion.js" defer></script>
+  <script type="module" src="../js/sw-register.js" defer></script>
+</body>
+</html>

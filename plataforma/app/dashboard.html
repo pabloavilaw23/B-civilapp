@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Inicio — B-Civil</title>
+  <meta name="description" content="Resumen de tu proyecto actual: registros de bitácora de la semana, últimas novedades y accesos.">
+  <meta name="theme-color" content="#F4F3F0">
+
+  <link rel="icon" href="../img/icons/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../img/icons/favicon-32x32.png">
+  <link rel="apple-touch-icon" href="../img/icons/apple-touch-icon.png">
+  <link rel="manifest" href="../manifest.json">
+
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+  <link rel="stylesheet" href="../css/icons.css">
+  <link rel="stylesheet" href="../css/app-shell.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+<body class="app-body hub-body app-has-dock">
+
+  <a class="skip-link" href="#hub-contenido">Saltar al contenido principal</a>
+
+  <div class="app-shell">
+
+    <!-- Cabecera: marca a la izquierda, cuenta a la derecha -->
+    <header class="hub-topbar">
+      <a class="hub-brand" href="dashboard.html" aria-label="B-Civil, inicio">
+        <img src="../img/icons/icon-192.png" alt="" width="44" height="44">
+      </a>
+
+      <!-- Menú de cuenta: Perfil, Configuración, Papelera, Soporte (hub-account-menu.js) -->
+      <div class="context-menu hub-account-menu" id="hub-account-menu">
+        <button
+          type="button"
+          class="hub-account-btn"
+          id="hub-account-trigger"
+          aria-haspopup="true"
+          aria-expanded="false"
+          aria-label="Cuenta"
+        >
+          <span class="hub-account-initials" id="hub-account-initials" hidden></span>
+          <span class="icon" data-icon="usuario" id="hub-account-icon" aria-hidden="true"></span>
+        </button>
+      </div>
+    </header>
+
+    <div class="app-content">
+      <main id="hub-contenido" class="app-main hub-main">
+
+        <!-- Saludo -->
+        <section class="hub-hero" aria-labelledby="hub-saludo-titulo">
+          <p class="hub-date" id="hub-fecha"></p>
+          <h1 class="hub-greeting" id="hub-saludo-titulo">
+            <span class="hub-greeting-name" id="hub-saludo">Hola,</span>
+            <span class="hub-greeting-soft">así va</span>
+            <span class="hub-greeting-accent">tu obra hoy.</span>
+          </h1>
+        </section>
+
+        <div id="dashboard-contenido" class="hub-layout" hidden>
+
+          <div class="hub-col hub-col-main">
+
+          <!-- Proyecto actual + actividad de la semana -->
+          <article class="card hub-project" aria-labelledby="dashboard-proyecto-nombre">
+            <header class="card-header">
+              <div class="hub-project-heading">
+                <p class="hub-card-eyebrow">Proyecto actual</p>
+                <h2 class="hub-project-name" id="dashboard-proyecto-nombre">Cargando…</h2>
+                <p class="card-meta hub-project-meta" id="dashboard-proyecto-meta"></p>
+              </div>
+              <a class="icon-btn" id="link-continuar-trabajando" href="proyectos/index.html" aria-label="Abrir proyecto">
+                <span class="icon" data-icon="flecha" aria-hidden="true"></span>
+              </a>
+            </header>
+
+            <div class="hub-week">
+              <div class="hub-week-figure">
+                <span class="stat-number" id="hub-semana-total">0</span>
+                <span class="stat-label">registros en los últimos 7 días</span>
+                <span class="status-pill status-pill--plain hub-today" id="hub-hoy-estado">Sin registros hoy</span>
+              </div>
+              <div class="histogram hub-week-chart" id="hub-semana-chart" role="img" aria-label="Registros por día"></div>
+            </div>
+          </article>
+
+          <!-- Desglose por tipo de registro -->
+          <div class="hub-types" aria-label="Registros de la semana por tipo">
+            <article class="card hub-type">
+              <span class="icon-badge"><span class="icon" data-icon="novedad" aria-hidden="true"></span></span>
+              <span class="stat-number stat-number--md" id="hub-semana-novedades">0</span>
+              <span class="stat-label">Novedades</span>
+              <div class="hatch-bar hatch-bar--sm" id="hub-bar-novedades" style="--value: 0"><span></span></div>
+            </article>
+            <article class="card hub-type">
+              <span class="icon-badge"><span class="icon" data-icon="fotografia" aria-hidden="true"></span></span>
+              <span class="stat-number stat-number--md" id="hub-semana-fotos">0</span>
+              <span class="stat-label">Fotografías</span>
+              <div class="hatch-bar hatch-bar--sm" id="hub-bar-fotos" style="--value: 0"><span></span></div>
+            </article>
+            <article class="card hub-type">
+              <span class="icon-badge"><span class="icon" data-icon="voz" aria-hidden="true"></span></span>
+              <span class="stat-number stat-number--md" id="hub-semana-voz">0</span>
+              <span class="stat-label">Notas de voz</span>
+              <div class="hatch-bar hatch-bar--sm" id="hub-bar-voz" style="--value: 0"><span></span></div>
+            </article>
+          </div>
+
+          </div>
+
+          <div class="hub-col hub-col-side">
+
+          <!-- Últimos registros -->
+          <section class="card hub-activity" aria-labelledby="hub-actividad-titulo">
+            <div class="section-header">
+              <h2 id="hub-actividad-titulo">Últimos registros</h2>
+              <a href="bitacora/bitacora.html" id="link-ver-bitacora-completa">Ver bitácora</a>
+            </div>
+            <ul class="list" id="activity-list"></ul>
+            <div class="empty-state hub-empty-inline" id="activity-empty-message" hidden>
+              <span class="icon-badge"><span class="icon" data-icon="bitacora" aria-hidden="true"></span></span>
+              <h3>Tu bitácora está lista</h3>
+              <p>Usa el botón naranja para registrar la primera novedad, foto o nota de voz.</p>
+            </div>
+          </section>
+
+          <!-- Otros proyectos -->
+          <section class="hub-projects" id="other-projects-section" aria-labelledby="hub-proyectos-titulo">
+            <div class="section-header">
+              <h2 id="hub-proyectos-titulo">Otros proyectos</h2>
+              <a href="proyectos/index.html">Ver todos</a>
+            </div>
+            <ul class="list" id="other-projects-list"></ul>
+            <p class="hub-muted" id="other-projects-empty-message" hidden>No tienes más proyectos activos.</p>
+          </section>
+
+          </div>
+
+        </div>
+
+        <!-- Sin proyectos todavía -->
+        <section class="card hub-empty" id="dashboard-empty-state" hidden>
+          <span class="icon-badge icon-badge--accent"><span class="icon" data-icon="proyectos" aria-hidden="true"></span></span>
+          <h2>Crea tu primer proyecto</h2>
+          <p>Con un proyecto creado podrás llevar la bitácora, generar documentos y consultar al asistente.</p>
+          <a class="btn btn-primary" href="proyectos/index.html#nuevo">Crear proyecto</a>
+        </section>
+
+      </main>
+    </div>
+
+    <!-- Navegación flotante -->
+    <nav class="app-nav" id="app-nav" aria-label="Navegación principal">
+      <ul class="app-nav-list">
+        <li class="app-nav-item">
+          <a class="app-nav-link is-active" href="dashboard.html" aria-current="page" title="Inicio">
+            <span class="icon" data-icon="inicio" aria-hidden="true"></span>
+            <span class="app-nav-label">Inicio</span>
+          </a>
+        </li>
+        <li class="app-nav-item">
+          <a class="app-nav-link" id="hub-nav-bitacora" href="bitacora/bitacora.html" title="Bitácora">
+            <span class="icon" data-icon="bitacora" aria-hidden="true"></span>
+            <span class="app-nav-label">Bitácora</span>
+          </a>
+        </li>
+        <li class="app-nav-item">
+          <a class="app-nav-link" href="proyectos/index.html" title="Proyectos">
+            <span class="icon" data-icon="proyectos" aria-hidden="true"></span>
+            <span class="app-nav-label">Proyectos</span>
+          </a>
+        </li>
+        <li class="app-nav-item">
+          <a class="app-nav-link" href="documentos/documentos.html" title="Documentos">
+            <span class="icon" data-icon="documentos" aria-hidden="true"></span>
+            <span class="app-nav-label">Documentos</span>
+          </a>
+        </li>
+        <li class="app-nav-item">
+          <a class="app-nav-link" href="chat/asistente.html" title="Asistente">
+            <span class="icon" data-icon="asistente" aria-hidden="true"></span>
+            <span class="app-nav-label">Asistente</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+  </div>
+
+  <script type="module" src="../js/dashboard.js" defer></script>
+  <script type="module" src="../js/registro-global.js" defer></script>
+  <script type="module" src="../js/hub-account-menu.js" defer></script>
+  <script type="module" src="../js/sw-register.js" defer></script>
+</body>
+</html>

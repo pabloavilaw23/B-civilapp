@@ -1,0 +1,1181 @@
+/* ==========================================================================
+   AUTH.CSS — B-Civil
+   Pantalla de acceso (index.html), registro (registro.html) y panel de
+   recuperación de contraseña (recuperar-password.js).
+
+   Fotografía de obra a pantalla completa con un velo oscuro moderado;
+   en escritorio, marca a la izquierda y acceso a la derecha; en móvil,
+   todo apilado y centrado.
+
+   Identidad: isotipo y "B-CIVIL" en Archivo Expanded con el guion en
+   naranja de marca; "INGENIERÍA · CONSTRUCCIÓN" en IBM Plex Mono.
+   Acción: naranja de marca #F26A21 (botón principal y focos), el mismo
+   acento de toda la app.
+
+   Todo está acotado a .auth-body para no afectar al resto de la app.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Tokens
+   -------------------------------------------------------------------------- */
+.auth-body {
+  /* Superficies */
+  --bc-asphalt: #0B0D11;
+  --bc-glass: rgba(14, 16, 21, 0.62);
+  --bc-field: rgba(255, 255, 255, 0.96);
+  --bc-field-hover: #FFFFFF;
+  --bc-field-focus: #FFFFFF;
+  --bc-field-ink: #15171B;
+  --bc-field-muted: #7A808A;
+
+  /* Tinta */
+  --bc-titanium: #FFFFFF;
+  --bc-ink: #F1F2F4;
+  --bc-ink-soft: #B9BEC7;
+  --bc-ink-faint: #858B96;
+
+  /* Líneas de 1px semitransparentes */
+  --bc-line: rgba(255, 255, 255, 0.1);
+  --bc-line-strong: rgba(255, 255, 255, 0.2);
+
+  /* Marca y acción */
+  --bc-brand: #F26A21;      /* naranja del logo (guion e isotipo) */
+  --bc-amber: #F26A21;      /* naranja de marca (botón y focos), igual que en la app */
+  --bc-amber-hover: #FF7A33;
+  --bc-amber-ring: rgba(242, 106, 33, 0.28);
+  --bc-amber-glow: rgba(242, 106, 33, 0.14);
+  --bc-on-amber: #111111;
+
+  /* Estados */
+  --bc-error: #F87171;
+  --bc-error-text: #FECACA;
+  --bc-error-soft: rgba(64, 14, 14, 0.72);
+  --bc-error-line: rgba(248, 113, 113, 0.32);
+  --bc-success: #4ADE80;
+  --bc-success-text: #BBF7D0;
+  --bc-success-soft: rgba(10, 46, 24, 0.72);
+  --bc-success-line: rgba(74, 222, 128, 0.28);
+  --bc-info: #A3AEBF;
+  --bc-info-soft: rgba(16, 19, 25, 0.72);
+
+  /* Tipografía */
+  --bc-font-brand: 'Archivo', 'Arial Black', 'Helvetica Neue', Arial, sans-serif;
+  --bc-font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  --bc-font-display: var(--bc-font-brand);
+  --bc-font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* Geometría */
+  --bc-radius-panel: 20px;
+  --bc-radius-field: 12px;
+  --bc-radius-button: 12px;
+  --bc-radius-status: 10px;
+  --bc-control-h: 52px;
+
+  --bc-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Línea de tiempo de la entrada. Por defecto (registro.html o recarga
+     dentro de la misma sesión) todo aparece casi de inmediato. */
+  --bc-d-bg: 0.4s;
+  --bc-t-brand: 0s;
+  --bc-d-brand: 0.5s;
+  --bc-t-lead: 0.05s;
+  --bc-t-card: 0.08s;
+  --bc-d-card: 0.6s;
+
+  /* Tokens globales reasignados para los componentes compartidos */
+  --color-paper: var(--bc-asphalt);
+  --color-surface: var(--bc-glass);
+  --color-ink: var(--bc-ink);
+  --color-ink-soft: var(--bc-ink-soft);
+  --color-ink-faint: var(--bc-ink-faint);
+  --color-line: var(--bc-line);
+  --color-line-strong: var(--bc-line-strong);
+  --color-primary: var(--bc-amber);
+  --color-primary-hover: var(--bc-amber-hover);
+  --color-on-primary: var(--bc-on-amber);
+  --color-focus: var(--bc-amber);
+  --color-danger: var(--bc-error-text);
+  --color-success: var(--bc-success-text);
+  --font-display: var(--bc-font-display);
+  --font-body: var(--bc-font-body);
+
+  /* Base */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0;
+  position: relative;
+  isolation: isolate;
+  overflow-x: hidden;
+  background-color: var(--bc-asphalt);
+  color: var(--bc-ink);
+  font-family: var(--bc-font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Primera carga de la sesión (solo index.html): entrada completa */
+.auth-body--splash {
+  --bc-d-bg: 1.2s;
+  --bc-t-brand: 0.15s;
+  --bc-d-brand: 1.1s;
+  --bc-t-lead: 0.45s;
+  --bc-t-card: 0.75s;
+  --bc-d-card: 0.9s;
+}
+
+.bc-no-splash .auth-body--splash {
+  --bc-d-bg: 0.4s;
+  --bc-t-brand: 0s;
+  --bc-d-brand: 0.5s;
+  --bc-t-lead: 0.05s;
+  --bc-t-card: 0.08s;
+  --bc-d-card: 0.6s;
+}
+
+/* --------------------------------------------------------------------------
+   2. Fondo: fotografía de obra + velo oscuro moderado
+   -------------------------------------------------------------------------- */
+.auth-body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background-color: var(--bc-asphalt);
+  background-image: url('../img/bg-obra-hero.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  animation: bc-fade var(--bc-d-bg) ease-out 0s both;
+}
+
+/* Velo: más denso a la izquierda (texto de marca) y abajo, más ligero
+   al centro para que la foto respire. Rango 0.45 – 0.65. */
+.auth-body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0.45) 50%, rgba(0, 0, 0, 0.6) 100%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0) 55%, rgba(0, 0, 0, 0.35) 100%);
+}
+
+@keyframes bc-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* --------------------------------------------------------------------------
+   3. Disposición en dos columnas (escritorio)
+   -------------------------------------------------------------------------- */
+.auth-split {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(22rem, 27rem);
+  align-items: center;
+  gap: clamp(3rem, 7vw, 7rem);
+  width: 100%;
+  max-width: 76rem;
+  box-sizing: border-box;
+  margin: 0 auto;
+  padding:
+    calc(clamp(2rem, 6vh, 4rem) + env(safe-area-inset-top, 0px))
+    clamp(1.5rem, 5vw, 4rem)
+    clamp(2rem, 6vh, 4rem);
+}
+
+/* --------------------------------------------------------------------------
+   4. Marca (columna izquierda)
+   -------------------------------------------------------------------------- */
+.auth-hero {
+  color: var(--bc-titanium);
+}
+
+.brand-lockup {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  animation: bc-emerge var(--bc-d-brand) var(--bc-ease-out) var(--bc-t-brand) both;
+}
+
+.brand-iso {
+  display: block;
+  width: clamp(7.5rem, 13vw, 10.5rem);
+  height: auto;
+  margin-bottom: 1.25rem;
+  color: var(--bc-titanium);
+  filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.45));
+}
+
+.brand-iso-accent {
+  fill: var(--bc-brand);
+}
+
+.brand-wordmark {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  font-family: var(--bc-font-brand);
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: clamp(2.5rem, 5.4vw, 4.5rem);
+  line-height: 1;
+  letter-spacing: 0.1em;
+  margin-right: -0.1em; /* compensa el tracking del último carácter */
+  color: var(--bc-titanium);
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+  white-space: nowrap;
+}
+
+.brand-dash {
+  display: inline-block;
+  width: 0.5em;
+  height: 0.17em;
+  /* la "B" ya aporta su tracking a la izquierda */
+  margin: 0 0.26em 0 0.12em;
+  background-color: var(--bc-brand);
+}
+
+.brand-tagline {
+  margin: 1rem 0 0;
+  font-family: var(--bc-font-mono);
+  font-size: clamp(0.75rem, 1.25vw, 0.95rem);
+  font-weight: 400;
+  letter-spacing: 0.34em;
+  margin-right: -0.34em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.82);
+  white-space: nowrap;
+}
+
+.brand-tagline span {
+  margin: 0 0.6em;
+}
+
+.auth-hero-lead {
+  max-width: 28rem;
+  margin: 2.5rem 0 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.22);
+  font-size: clamp(1.05rem, 1.5vw, 1.25rem);
+  font-weight: 400;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.86);
+  text-wrap: balance;
+  animation: bc-emerge var(--bc-d-brand) var(--bc-ease-out) var(--bc-t-lead) both;
+}
+
+@keyframes bc-emerge {
+  from {
+    opacity: 0;
+    filter: blur(12px);
+    transform: scale(1.03);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   5. Panel de acceso (columna derecha, sin caja, sobre la foto) y
+      tarjeta de cristal (registro y recuperación)
+   -------------------------------------------------------------------------- */
+.auth-panel {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0;
+  animation: bc-card-in var(--bc-d-card) var(--bc-ease-out) var(--bc-t-card) both;
+}
+
+/* Tarjeta de cristal: se mantiene para registro.html y el panel de
+   recuperación de contraseña */
+.auth-card {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  padding: clamp(1.75rem, 4vw, 2.5rem);
+  background-color: var(--bc-glass);
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 40%);
+  border: 1px solid var(--bc-line);
+  border-radius: var(--bc-radius-panel);
+  -webkit-backdrop-filter: blur(24px) saturate(130%);
+          backdrop-filter: blur(24px) saturate(130%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 1px 2px rgba(0, 0, 0, 0.4),
+    0 24px 60px -20px rgba(0, 0, 0, 0.6);
+  animation: bc-card-in var(--bc-d-card) var(--bc-ease-out) var(--bc-t-card) both;
+}
+
+.auth-card {
+  max-width: 27rem;
+}
+
+@keyframes bc-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .auth-card {
+    background-color: rgba(14, 16, 21, 0.94);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   6. Encabezado del panel
+   -------------------------------------------------------------------------- */
+.auth-panel h1,
+.auth-card h1 {
+  margin: 0 0 0.5rem;
+  font-family: var(--bc-font-brand);
+  font-stretch: 125%;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  color: var(--bc-titanium);
+}
+
+.auth-panel h1 {
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.45);
+}
+
+.auth-panel .auth-subtitle {
+  color: rgba(255, 255, 255, 0.82);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+}
+
+.auth-subtitle {
+  margin: 0 0 1.75rem;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--bc-ink-soft);
+}
+
+/* --------------------------------------------------------------------------
+   7. Formulario
+   -------------------------------------------------------------------------- */
+.auth-form {
+  margin: 0 0 1.75rem;
+}
+
+.auth-form .form-field {
+  margin: 0 0 1.125rem;
+}
+
+.auth-form .form-field label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.88);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.45);
+  transition: color 0.2s ease;
+}
+
+.auth-form .form-field:focus-within label {
+  color: #FFFFFF;
+}
+
+.auth-form input[type="email"],
+.auth-form input[type="password"],
+.auth-form input[type="text"] {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  height: var(--bc-control-h);
+  padding: 0 1rem;
+  margin: 0;
+  font-family: var(--bc-font-body);
+  font-size: 1rem; /* 16px: evita el zoom automático en iOS */
+  color: var(--bc-field-ink);
+  caret-color: #A9420B;
+  background-color: var(--bc-field);
+  border: 1px solid transparent;
+  border-radius: var(--bc-radius-field);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25), 0 6px 18px -8px rgba(0, 0, 0, 0.45);
+  outline: none;
+  -webkit-appearance: none;
+          appearance: none;
+  transition:
+    border-color 0.25s ease,
+    background-color 0.25s ease,
+    box-shadow 0.35s var(--bc-ease-out);
+}
+
+.auth-form input:hover {
+  background-color: var(--bc-field-hover);
+}
+
+/* Foco: borde ámbar, fondo con un leve brillo ámbar */
+.auth-form input:focus,
+.auth-form input:focus-visible {
+  border-color: var(--bc-amber);
+  background-color: var(--bc-field-focus);
+  box-shadow:
+    0 0 0 3px rgba(242, 106, 33, 0.45),
+    0 0 28px -2px rgba(242, 106, 33, 0.35);
+}
+
+.auth-form input::placeholder {
+  color: var(--bc-field-muted);
+  opacity: 0.8;
+}
+
+/* Autocompletado del navegador: mantener el campo oscuro */
+.auth-form input:-webkit-autofill,
+.auth-form input:-webkit-autofill:hover,
+.auth-form input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--bc-field-ink);
+  caret-color: #A9420B;
+  -webkit-box-shadow: 0 0 0 1000px #FFFFFF inset;
+  transition: background-color 9999s ease-out 0s;
+}
+
+/* --------------------------------------------------------------------------
+   8. Contraseña: botón con ícono de ojo
+   app.js (initPasswordToggles) cambia el texto del botón en cada clic.
+   El texto se conserva para lectores de pantalla y se oculta a la vista;
+   el ícono se dibuja con una máscara que cambia según aria-pressed.
+   -------------------------------------------------------------------------- */
+.auth-form .password-field {
+  position: relative;
+}
+
+.auth-form .password-field input {
+  padding-right: 3.5rem;
+}
+
+.auth-form .toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 0.25rem;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  font-size: 0;
+  line-height: 0;
+  color: transparent;
+  white-space: nowrap;
+  background: transparent;
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.15s ease;
+}
+
+.auth-form .toggle-password::before {
+  content: '';
+  display: block;
+  width: 20px;
+  height: 20px;
+  background-color: var(--bc-field-muted);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3C/svg%3E") center / contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3C/svg%3E") center / contain no-repeat;
+  transition: background-color 0.15s ease;
+}
+
+/* Contraseña visible: ojo tachado */
+.auth-form .toggle-password[aria-pressed="true"]::before {
+  background-color: var(--bc-field-ink);
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 3l18 18'/%3E%3Cpath d='M10.6 5.1A10.6 10.6 0 0 1 12 5c6.4 0 10 7 10 7a17.4 17.4 0 0 1-3.2 4.1'/%3E%3Cpath d='M6.6 6.6C3.9 8.4 2 12 2 12s3.6 7 10 7a10 10 0 0 0 5.4-1.6'/%3E%3Cpath d='M9.9 9.9a3 3 0 0 0 4.2 4.2'/%3E%3C/svg%3E");
+          mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 3l18 18'/%3E%3Cpath d='M10.6 5.1A10.6 10.6 0 0 1 12 5c6.4 0 10 7 10 7a17.4 17.4 0 0 1-3.2 4.1'/%3E%3Cpath d='M6.6 6.6C3.9 8.4 2 12 2 12s3.6 7 10 7a10 10 0 0 0 5.4-1.6'/%3E%3Cpath d='M9.9 9.9a3 3 0 0 0 4.2 4.2'/%3E%3C/svg%3E");
+}
+
+.auth-form .toggle-password:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.auth-form .toggle-password:hover::before {
+  background-color: var(--bc-field-ink);
+}
+
+/* --------------------------------------------------------------------------
+   9. Enlace de recuperación, ayuda y casilla de términos (registro)
+   -------------------------------------------------------------------------- */
+.auth-form .form-field-inline {
+  display: flex;
+  justify-content: flex-end;
+  margin: -0.25rem 0 1.5rem;
+}
+
+.auth-form .link-secondary {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.88);
+  text-decoration: none;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+  border-bottom: 1px solid transparent;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.auth-form .link-secondary:hover {
+  color: var(--bc-ink);
+  border-bottom-color: var(--bc-line-strong);
+}
+
+.auth-form .field-hint {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--bc-ink-faint);
+}
+
+.auth-form #registro-codigo {
+  letter-spacing: 0.06em;
+}
+
+.auth-form #registro-codigo::placeholder {
+  letter-spacing: 0;
+}
+
+.auth-form .form-field-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin: 0.25rem 0 1.75rem;
+}
+
+.auth-form .form-field-checkbox input[type="checkbox"] {
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin: 0.1rem 0 0;
+  background-color: var(--bc-field);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 0.8rem;
+  border: 1px solid var(--bc-line-strong);
+  border-radius: 6px;
+  cursor: pointer;
+  -webkit-appearance: none;
+          appearance: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.25s ease;
+}
+
+.auth-form .form-field-checkbox input[type="checkbox"]:checked {
+  background-color: var(--bc-amber);
+  border-color: var(--bc-amber);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6.2l2.3 2.3 4.7-5' fill='none' stroke='%230B0B0C' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+.auth-form .form-field-checkbox input[type="checkbox"]:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--bc-amber-ring);
+}
+
+.auth-form .form-field-checkbox label {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.55;
+  color: var(--bc-ink-soft);
+  cursor: pointer;
+}
+
+.auth-form .form-field-checkbox label a {
+  color: var(--bc-ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--bc-line-strong);
+}
+
+.auth-form .form-field-checkbox label a:hover {
+  border-bottom-color: var(--bc-ink);
+}
+
+/* --------------------------------------------------------------------------
+   10. Botón principal y secundario
+   -------------------------------------------------------------------------- */
+.auth-form .btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: var(--bc-control-h);
+  padding: 0.875rem 1.5rem;
+  margin: 0;
+  font-family: var(--bc-font-body);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  color: var(--bc-on-amber);
+  background-color: var(--bc-amber);
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0) 60%);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: var(--bc-radius-button);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    0 1px 2px rgba(0, 0, 0, 0.5),
+    0 10px 28px -10px rgba(242, 106, 33, 0.5);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+  transition:
+    transform 0.16s var(--bc-ease-out),
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.auth-form .btn-primary:hover {
+  background-color: var(--bc-amber-hover);
+}
+
+/* Respuesta física al clic / toque */
+.auth-form .btn-primary:active {
+  transform: scale(0.985);
+  box-shadow:
+    inset 0 1px 3px rgba(0, 0, 0, 0.2),
+    0 4px 14px -6px rgba(242, 106, 33, 0.5);
+  transition-duration: 0.06s;
+}
+
+.auth-form .btn-primary:focus-visible {
+  outline: none;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    0 0 0 2px var(--bc-asphalt),
+    0 0 0 4px var(--bc-amber);
+}
+
+/* Carga: login.js deshabilita el botón mientras consulta Supabase */
+.auth-form .btn-primary:disabled {
+  cursor: progress;
+  opacity: 0.78;
+  transform: none;
+  background-image:
+    linear-gradient(110deg, transparent 35%, rgba(255, 255, 255, 0.3) 50%, transparent 65%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0) 60%);
+  background-size: 220% 100%, 100% 100%;
+  animation: bc-working 1.2s linear infinite;
+}
+
+@keyframes bc-working {
+  from { background-position: 120% 0, 0 0; }
+  to { background-position: -120% 0, 0 0; }
+}
+
+.auth-body .btn-secondary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: var(--bc-control-h);
+  padding: 0.875rem 1.5rem;
+  font-family: var(--bc-font-body);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--bc-ink);
+  background-color: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--bc-line-strong);
+  border-radius: var(--bc-radius-button);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: transform 0.16s var(--bc-ease-out), background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.auth-body .btn-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.auth-body .btn-secondary:active {
+  transform: scale(0.985);
+  transition-duration: 0.06s;
+}
+
+.auth-body .btn-secondary:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--bc-asphalt), 0 0 0 4px var(--bc-amber);
+}
+
+/* --------------------------------------------------------------------------
+   11. Estados de validación (login.js / registro.js / validaciones.js)
+   validaciones.js inserta .field-error y .form-status con estilos en
+   línea; aquí se sobrescriben con !important solo dentro de .auth-body.
+   -------------------------------------------------------------------------- */
+.auth-form input[aria-invalid="true"] {
+  border-color: #EF4444;
+  background-color: #FFF5F5;
+}
+
+.auth-form input[aria-invalid="true"]:focus {
+  border-color: #EF4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.35);
+}
+
+/* Mensaje bajo el campo */
+.auth-body .field-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin: 0.5rem 0 0 !important;
+  font-size: 0.8125rem !important;
+  line-height: 1.45;
+  color: var(--bc-error-text) !important;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+  animation: bc-msg-in 0.3s var(--bc-ease-out) both;
+}
+
+.auth-body .field-error::before {
+  content: '';
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  margin-top: 0.1em;
+  background-color: var(--bc-error);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round'%3E%3Ccircle cx='8' cy='8' r='6.25'/%3E%3Cpath d='M8 4.75v3.75'/%3E%3Cpath d='M8 11h.01' stroke-width='2'/%3E%3C/svg%3E") center / contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round'%3E%3Ccircle cx='8' cy='8' r='6.25'/%3E%3Cpath d='M8 4.75v3.75'/%3E%3Cpath d='M8 11h.01' stroke-width='2'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.auth-body .field-error:empty {
+  display: none;
+}
+
+/* Mensaje general del formulario */
+.auth-body .form-status {
+  display: block;
+  margin: 0 0 1.25rem !important;
+  padding: 0.8rem 1rem;
+  font-size: 0.875rem !important;
+  line-height: 1.5;
+  color: var(--bc-ink) !important;
+  background-color: var(--bc-info-soft);
+  border: 1px solid var(--bc-line);
+  border-left: 2px solid var(--bc-info);
+  border-radius: var(--bc-radius-status);
+  -webkit-backdrop-filter: blur(12px);
+          backdrop-filter: blur(12px);
+  animation: bc-msg-in 0.35s var(--bc-ease-out) both;
+}
+
+.auth-body .form-status:empty {
+  display: none;
+}
+
+.auth-body .form-status-info {
+  color: var(--bc-ink) !important;
+  background-color: var(--bc-info-soft);
+  border-color: var(--bc-line);
+  border-left-color: var(--bc-info);
+}
+
+.auth-body .form-status-error {
+  color: var(--bc-error-text) !important;
+  background-color: var(--bc-error-soft);
+  border-color: var(--bc-error-line);
+  border-left-color: var(--bc-error);
+}
+
+.auth-body .form-status-success {
+  color: var(--bc-success-text) !important;
+  background-color: var(--bc-success-soft);
+  border-color: var(--bc-success-line);
+  border-left-color: var(--bc-success);
+}
+
+@keyframes bc-msg-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   12. Pie del panel y de la página
+   -------------------------------------------------------------------------- */
+.auth-switch {
+  margin: 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--bc-line);
+  font-size: 0.9375rem;
+  text-align: center;
+  color: var(--bc-ink-soft);
+}
+
+.auth-panel .auth-switch {
+  border-top-color: rgba(255, 255, 255, 0.22);
+  color: rgba(255, 255, 255, 0.82);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+}
+
+.auth-panel .auth-switch a {
+  color: #FFFFFF;
+  border-bottom-color: rgba(255, 255, 255, 0.5);
+}
+
+.auth-switch a {
+  margin-left: 0.25rem;
+  font-weight: 600;
+  color: var(--bc-ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--bc-line-strong);
+  transition: border-color 0.15s ease;
+}
+
+.auth-switch a:hover {
+  border-bottom-color: var(--bc-ink);
+}
+
+.auth-back {
+  margin: 1rem 0 0;
+  text-align: center;
+}
+
+.auth-back a {
+  font-size: 0.875rem;
+  color: var(--bc-ink-faint);
+  text-decoration: none;
+}
+
+.auth-back a:hover {
+  color: var(--bc-ink);
+}
+
+.auth-body .site-footer {
+  position: relative;
+  margin: 0;
+  background: transparent;
+  border: 0;
+  padding: 1rem 1rem calc(1.25rem + env(safe-area-inset-bottom, 0px));
+  animation: bc-fade 0.8s ease-out var(--bc-t-card) both;
+}
+
+.auth-body .footer-copy {
+  margin: 0;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--bc-ink-faint);
+}
+
+/* --------------------------------------------------------------------------
+   13. Compatibilidad con registro.html (cabecera con logo)
+   -------------------------------------------------------------------------- */
+.auth-body .site-header {
+  position: relative;
+  top: auto;
+  left: auto;
+  z-index: 2;
+  transform: none;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none !important;
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+.auth-body .header-inner {
+  display: flex;
+  align-items: center;
+  min-height: 4rem;
+  padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+}
+
+.auth-body .logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  color: var(--bc-ink);
+  text-decoration: none;
+}
+
+.auth-body .logo img {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.auth-body .logo-text {
+  font-family: var(--bc-font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--bc-titanium);
+}
+
+/* El isotipo circular dentro del panel ya no se usa */
+.auth-body .auth-logo {
+  display: none;
+}
+
+.auth-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  position: relative;
+  background: transparent;
+  padding-block: clamp(1.5rem, 5vh, 3.5rem);
+}
+
+.auth-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding-inline: clamp(1rem, 4vw, 2rem);
+}
+
+.auth-card--wide {
+  max-width: 28rem;
+}
+
+.auth-body .logo-text {
+  font-family: var(--bc-font-brand);
+  font-stretch: 125%;
+}
+
+/* --------------------------------------------------------------------------
+   14. Panel de recuperación de contraseña (recuperar-password.js)
+   -------------------------------------------------------------------------- */
+.auth-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  background-color: rgba(4, 6, 10, 0.6);
+  -webkit-backdrop-filter: blur(8px);
+          backdrop-filter: blur(8px);
+  animation: bc-fade 0.25s ease both;
+}
+
+.auth-body .auth-dialog {
+  max-width: 26rem;
+  animation: bc-dialog-in 0.4s var(--bc-ease-out) both;
+}
+
+@keyframes bc-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.auth-dialog h2 {
+  margin: 0 0 0.5rem;
+  padding-right: 5rem;
+  font-family: var(--bc-font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--bc-ink);
+}
+
+.auth-dialog .auth-subtitle {
+  margin-bottom: 1.5rem;
+}
+
+.auth-dialog .auth-form {
+  margin: 0;
+}
+
+.auth-dialog-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.45rem 0.8rem;
+  font-family: var(--bc-font-body);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--bc-ink-soft);
+  background: transparent;
+  border: 1px solid var(--bc-line);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.auth-dialog-close:hover {
+  color: var(--bc-ink);
+  border-color: var(--bc-line-strong);
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+.auth-dialog-message {
+  margin: 0 0 1.5rem;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--bc-ink-soft);
+}
+
+/* --------------------------------------------------------------------------
+   15. Foco visible y accesibilidad
+   -------------------------------------------------------------------------- */
+.auth-body a:focus-visible,
+.auth-form .toggle-password:focus-visible,
+.auth-dialog-close:focus-visible {
+  outline: 2px solid var(--bc-amber);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+.auth-body .skip-link {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 200;
+  padding: 0.6rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--bc-on-amber);
+  background: var(--bc-amber);
+  border-radius: 8px;
+  text-decoration: none;
+  transform: translateY(-200%);
+  transition: transform 0.2s ease;
+}
+
+.auth-body .skip-link:focus {
+  transform: translateY(0);
+}
+
+/* --------------------------------------------------------------------------
+   16. Tableta y móvil: todo apilado y centrado
+   -------------------------------------------------------------------------- */
+@media (max-width: 899px) {
+  .auth-split {
+    grid-template-columns: minmax(0, 27rem);
+    justify-content: center;
+    align-content: center;
+    gap: 2rem;
+    padding:
+      calc(2.5rem + env(safe-area-inset-top, 0px))
+      1.25rem
+      1.5rem;
+  }
+
+  .auth-hero {
+    text-align: center;
+  }
+
+  .brand-lockup {
+    display: flex;
+  }
+
+  .brand-iso {
+    width: 6.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .brand-wordmark {
+    justify-content: center;
+    font-size: clamp(2rem, 10vw, 3rem);
+  }
+
+  .brand-tagline {
+    font-size: clamp(0.625rem, 2.8vw, 0.8rem);
+    letter-spacing: 0.26em;
+    margin-right: -0.26em;
+    margin-top: 0.75rem;
+  }
+
+  .brand-tagline span {
+    margin: 0 0.4em;
+  }
+
+  .auth-hero-lead {
+    max-width: 22rem;
+    margin: 1.25rem auto 0;
+    padding-top: 0;
+    border-top: 0;
+    font-size: 0.9375rem;
+  }
+
+  .auth-panel {
+    padding: 0;
+  }
+
+  .auth-panel h1 {
+    text-align: center;
+  }
+
+  .auth-panel .auth-subtitle {
+    text-align: center;
+  }
+
+  /* En móvil el formulario queda sobre la foto completa: velo uniforme */
+  .auth-body::after {
+    background:
+      linear-gradient(180deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.62) 50%, rgba(0, 0, 0, 0.72) 100%);
+  }
+}
+
+/* Pantallas muy bajas: se omite la bajada para priorizar el formulario */
+@media (max-width: 899px) and (max-height: 700px) {
+  .auth-hero-lead {
+    display: none;
+  }
+
+  .brand-iso {
+    width: 4.75rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   17. Movimiento reducido
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .auth-body::before,
+  .brand-lockup,
+  .auth-hero-lead,
+  .auth-panel,
+  .auth-card,
+  .auth-body .site-footer,
+  .auth-body .field-error,
+  .auth-body .form-status,
+  .auth-dialog-overlay,
+  .auth-body .auth-dialog {
+    animation: none;
+  }
+
+  .auth-form .btn-primary,
+  .auth-form .btn-primary:disabled {
+    animation: none;
+    transition: background-color 0.2s ease;
+  }
+
+  .auth-form .btn-primary:active,
+  .auth-body .btn-secondary:active {
+    transform: none;
+  }
+}

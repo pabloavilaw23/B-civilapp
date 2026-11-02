@@ -1,0 +1,42 @@
+/* ==========================================================================
+   RESPONSIVE.CSS — B-Civil
+   Ajustes globales por tamaño de pantalla. La base es el teléfono; cada
+   pantalla ajusta su propia cuadrícula en su hoja (dashboard.css,
+   bitacora.css...). Aquí solo vive lo que afecta a todas.
+
+   Se eliminaron las reglas de la antigua landing (hero, funciones,
+   llamado final), que ya no existe.
+   ========================================================================== */
+
+/* Teléfono (base) */
+:root {
+  --container-padding: var(--space-4);
+}
+
+/* Teléfono grande */
+@media (min-width: 380px) {
+  :root {
+    --container-padding: var(--space-5);
+  }
+}
+
+/* Tablet / iPad */
+@media (min-width: 768px) {
+  :root {
+    --container-padding: var(--space-6);
+  }
+}
+
+/* Escritorio grande */
+@media (min-width: 1280px) {
+  :root {
+    --container-padding: var(--space-7);
+  }
+}
+
+/* Teléfono en horizontal en obra: poca altura */
+@media (max-height: 480px) and (orientation: landscape) {
+  .section {
+    padding-block: var(--space-6);
+  }
+}

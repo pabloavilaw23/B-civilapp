@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>B-Civil — Bitácora y gestión técnica de obra</title>
+  <meta name="description" content="B-Civil: plataforma de control, bitácora y gestión técnica en obra para ingenieros civiles.">
+
+  <!--
+    Entrada animada completa solo en la primera visita de la sesión.
+    Usa la misma marca que login.html, así el acceso no repite su
+    propia animación al llegar desde aquí.
+  -->
+  <script>
+    (function () {
+      try {
+        if (sessionStorage.getItem('bc-splash-visto')) {
+          document.documentElement.classList.add('bc-no-splash');
+        } else {
+          sessionStorage.setItem('bc-splash-visto', '1');
+        }
+      } catch (e) { /* almacenamiento no disponible: se muestra la entrada */ }
+    })();
+  </script>
+
+  <!-- PWA -->
+  <link rel="icon" href="img/icons/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="img/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="img/icons/favicon-16x16.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0E1013">
+  <link rel="apple-touch-icon" href="img/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="B-Civil">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <!-- Foto de portada: se pide de inmediato -->
+  <link rel="preload" as="image" href="img/bg-obra-hero.jpg">
+
+  <!-- Tipografía: Archivo Expanded para la marca, Plus Jakarta Sans para el resto -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+
+  <link rel="stylesheet" href="css/bienvenida.css">
+</head>
+<body class="welcome-body">
+
+  <main class="welcome" id="contenido-principal">
+
+    <!-- Foto de obra -->
+    <div class="welcome-photo" aria-hidden="true"></div>
+
+    <div class="welcome-panel">
+
+      <!-- Marca -->
+      <div class="welcome-brand" aria-label="B-Civil">
+        <svg class="welcome-iso" viewBox="0 0 540 380" aria-hidden="true" focusable="false">
+          <g fill="none" stroke="currentColor" stroke-width="16" stroke-linejoin="miter">
+            <path d="M112 334V92L204 26V322"/>
+            <path d="M234 326V82L430 208V352"/>
+            <path d="M334 352V198L388 210"/>
+          </g>
+          <path d="M144 190L182 168V326L144 331Z" fill="currentColor"/>
+          <rect class="welcome-iso-accent" x="350" y="216" width="30" height="136"/>
+          <path d="M10 372L300 348L530 372Z" fill="currentColor"/>
+        </svg>
+        <span class="welcome-wordmark" aria-hidden="true">B<span class="welcome-dash"></span>CIVIL</span>
+      </div>
+
+      <h1 class="welcome-title">Bienvenido</h1>
+      <p class="welcome-text">
+        Tu bitácora de obra, tus proyectos y tus informes técnicos, en un solo lugar. Hecho para el trabajo en campo.
+      </p>
+
+      <div class="welcome-actions">
+        <a class="welcome-btn welcome-btn--primary" href="login.html">Iniciar sesión</a>
+        <a class="welcome-btn welcome-btn--secondary" href="registro.html">Crear cuenta</a>
+      </div>
+
+      <p class="welcome-legal">
+        Al continuar aceptas los
+        <a href="legal/terminos.html">Términos</a>
+        y la
+        <a href="legal/privacidad.html">Política de privacidad</a>.
+      </p>
+
+    </div>
+  </main>
+
+  <!-- Si ya hay sesión guardada, entra directo al Inicio -->
+  <script type="module" src="js/auth/redirigir-si-sesion.js"></script>
+  <script type="module" src="js/sw-register.js" defer></script>
+</body>
+</html>

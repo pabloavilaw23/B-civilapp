@@ -1,0 +1,362 @@
+/* ==========================================================================
+   MAIN.CSS — B-Civil
+   Variables globales, tipografía, reset y layout base.
+
+   Sistema visual 2026: lienzo gris cálido, tarjetas blancas de esquinas
+   amplias, negro para la estructura (navegación, pestaña activa, botón
+   principal) y naranja de marca para lo que importa (dato clave,
+   progreso, acción de captura). Verde y rojo solo como estados.
+
+   Los nombres de las variables se conservan a propósito: todas las
+   pantallas existentes heredan la nueva paleta sin cambiar su código.
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+/* --------------------------------------------------------------------------
+   1. VARIABLES GLOBALES
+   -------------------------------------------------------------------------- */
+:root {
+
+  /* Lienzo y superficies */
+  --color-paper: #F4F3F0;
+  --color-paper-alt: #ECEAE6;
+  --color-surface: #FFFFFF;
+
+  /* Tinta */
+  --color-ink: #15161A;
+  --color-ink-soft: #6A6D75;
+  --color-ink-faint: #A2A5AC;
+
+  /* Líneas: casi invisibles; la separación la dan el aire y la sombra */
+  --color-line: #ECEAE5;
+  --color-line-strong: #DDDAD4;
+
+  /* Estructura: negro. Botón principal, pestaña activa, navegación. */
+  --color-primary: #15161A;
+  --color-primary-hover: #2B2D33;
+  --color-primary-soft: #F0EEEA;
+  --color-on-primary: #FFFFFF;
+
+  /* Acento: naranja de marca. Dato clave, progreso, captura. */
+  --color-accent: #F26A21;
+  --color-accent-hover: #DD5813;
+  --color-accent-soft: #FDECE1;
+  --color-accent-ink: #A9420B;
+
+  /* Estados (solo para estados, nunca decoración) */
+  --color-success: #1E9A55;
+  --color-success-soft: #E3F4EA;
+  --color-danger: #D93B2B;
+  --color-danger-soft: #FCE7E4;
+  --color-focus: #F26A21;
+
+  /* Rellenos de datos */
+  --gradient-accent: linear-gradient(160deg, #FF9150 0%, #F26A21 55%, #E4561A 100%);
+  --gradient-peach: linear-gradient(180deg, #FFC9A6 0%, #FFE8D9 100%);
+  --pattern-hatch: repeating-linear-gradient(
+    135deg,
+    rgba(242, 106, 33, 0.55) 0,
+    rgba(242, 106, 33, 0.55) 2px,
+    transparent 2px,
+    transparent 7px
+  );
+  --pattern-hatch-neutral: repeating-linear-gradient(
+    135deg,
+    rgba(21, 22, 26, 0.12) 0,
+    rgba(21, 22, 26, 0.12) 2px,
+    transparent 2px,
+    transparent 7px
+  );
+
+  /* Tipografía: una sola familia geométrica para todo */
+  --font-display: "Plus Jakarta Sans", -apple-system, "Segoe UI", sans-serif;
+  --font-body: "Plus Jakarta Sans", -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Plus Jakarta Sans", -apple-system, "Segoe UI", sans-serif;
+
+  /* Escala tipográfica */
+  --text-xs: 0.75rem;      /* 12px */
+  --text-sm: 0.875rem;     /* 14px */
+  --text-base: 1rem;       /* 16px */
+  --text-md: 1.125rem;     /* 18px */
+  --text-lg: 1.375rem;     /* 22px */
+  --text-xl: 1.75rem;      /* 28px */
+  --text-2xl: 2.125rem;    /* 34px */
+  --text-3xl: clamp(2rem, 6vw, 2.75rem);
+  --text-hero: clamp(2.75rem, 11vw, 3.75rem); /* números protagonistas */
+
+  --leading-tight: 1.12;
+  --leading-snug: 1.35;
+  --leading-normal: 1.55;
+
+  --tracking-wide: 0.02em;
+  --tracking-wider: 0.04em;
+
+  /* Espaciado */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+  --space-10: 8rem;
+
+  /* Radios: amplios y consistentes */
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 24px;
+  --radius-pill: 999px;
+
+  /* Sombras: difusas, casi imperceptibles */
+  --shadow-sm: 0 1px 2px rgba(21, 22, 26, 0.04), 0 4px 14px -6px rgba(21, 22, 26, 0.08);
+  --shadow-md: 0 10px 30px -12px rgba(21, 22, 26, 0.16);
+  --shadow-lg: 0 20px 44px -14px rgba(21, 22, 26, 0.28);
+
+  /* Layout */
+  --container-max: 1120px;
+  --container-padding: var(--space-4);
+  --header-height: 4rem;
+}
+
+/* --------------------------------------------------------------------------
+   2. RESET BASE
+   -------------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+/* El atributo hidden siempre gana, aunque un componente defina display */
+[hidden] {
+  display: none !important;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  min-height: 100vh;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--color-ink);
+  background-color: var(--color-paper);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img,
+picture,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+ul,
+ol {
+  list-style: none;
+  padding: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+/* --------------------------------------------------------------------------
+   3. TIPOGRAFÍA BASE
+   -------------------------------------------------------------------------- */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: var(--leading-tight);
+  color: var(--color-ink);
+  letter-spacing: -0.02em;
+}
+
+h1 {
+  font-size: var(--text-3xl);
+  font-weight: 800;
+}
+
+h2 {
+  font-size: var(--text-lg);
+}
+
+h3 {
+  font-size: var(--text-md);
+}
+
+p {
+  color: var(--color-ink-soft);
+}
+
+/* Cifras alineadas en cualquier dato numérico */
+.tabular,
+.stat-number {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Etiqueta breve antes de un título: gris, en minúscula natural */
+.eyebrow {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--color-ink-soft);
+  margin-bottom: var(--space-2);
+}
+
+/* Regla de marcas tipo cinta métrica (separador de firma) */
+.ruler {
+  width: 100%;
+  height: 10px;
+  margin-block: var(--space-6);
+  background-image:
+    repeating-linear-gradient(to right, var(--color-line-strong) 0 2px, transparent 2px 8px);
+  background-size: 100% 10px;
+  background-repeat: repeat-x;
+  border-radius: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   4. CONTENEDORES Y LAYOUT BASE
+   -------------------------------------------------------------------------- */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
+}
+
+.skip-link {
+  position: absolute;
+  top: -3rem;
+  left: var(--space-4);
+  z-index: 200;
+  padding: var(--space-2) var(--space-4);
+  background-color: var(--color-ink);
+  color: var(--color-on-primary);
+  border-radius: var(--radius-pill);
+  transition: top 0.15s ease;
+}
+
+.skip-link:focus {
+  top: var(--space-4);
+}
+
+.section {
+  padding-block: var(--space-7);
+}
+
+.section-lead {
+  max-width: 42rem;
+  font-size: var(--text-md);
+}
+
+/* --------------------------------------------------------------------------
+   5. CABECERA Y PIE PÚBLICOS (páginas legales)
+   -------------------------------------------------------------------------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background-color: var(--color-paper);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  height: var(--header-height);
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+.logo img {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+}
+
+.logo-text {
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+}
+
+.site-footer {
+  padding-block: var(--space-6);
+  background-color: var(--color-paper);
+}
+
+.footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.footer-copy {
+  width: 100%;
+  font-size: var(--text-xs);
+  color: var(--color-ink-faint);
+}
+
+.site-footer-minimal .footer-copy {
+  width: auto;
+}

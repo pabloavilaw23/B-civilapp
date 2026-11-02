@@ -1,0 +1,1083 @@
+/* ==========================================================================
+   DOCUMENTOS.CSS — Documentos
+   Pestañas segmentadas, indicador de pasos como regla de marcas que se
+   llena de naranja, tarjetas de tipo de documento, y acciones del paso
+   fijas encima de la barra de navegación en el teléfono (el botón
+   "Continuar" siempre está al alcance del pulgar).
+   ========================================================================== */
+
+.documentos-body {
+  --page-max: 46rem;
+}
+
+.documentos-tabs {
+  margin-bottom: var(--space-5);
+}
+
+.doc-panel-hint {
+  margin: 0 0 var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--color-ink-soft);
+}
+
+/* --------------------------------------------------------------------------
+   INDICADOR DE PASOS — regla de marcas
+   La pista va de la primera a la última bolita; generador.js ajusta el
+   ancho de la parte llena (0 %, 33 %, 67 %, 100 %).
+   -------------------------------------------------------------------------- */
+.doc-stepper {
+  position: relative;
+  margin-bottom: var(--space-5);
+  padding: var(--space-4) var(--space-4) var(--space-3);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.doc-stepper-track {
+  position: absolute;
+  top: calc(var(--space-4) + 1.125rem - 6px);
+  left: calc(var(--space-4) + 1.125rem);
+  right: calc(var(--space-4) + 1.125rem);
+  height: 12px;
+  background-image: repeating-linear-gradient(to right, var(--color-line-strong) 0 2px, transparent 2px 7px);
+  border-radius: 2px;
+}
+
+.doc-stepper-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0%;
+  background-image: repeating-linear-gradient(to right, var(--color-accent) 0 2px, transparent 2px 7px);
+  transition: width 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.doc-stepper ol {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.doc-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 2.25rem;
+}
+
+.doc-step-dot {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  font-size: var(--text-sm);
+  font-weight: 800;
+  color: var(--color-ink-faint);
+  background-color: var(--color-paper);
+  border: 3px solid var(--color-surface);
+  border-radius: 50%;
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
+}
+
+.doc-step-label {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-ink-faint);
+  white-space: nowrap;
+}
+
+.doc-step.is-active .doc-step-dot {
+  color: #FFFFFF;
+  background-color: var(--color-ink);
+  transform: scale(1.08);
+}
+
+.doc-step.is-active .doc-step-label {
+  color: var(--color-ink);
+  font-weight: 800;
+}
+
+.doc-step.is-complete .doc-step-dot {
+  color: #FFFFFF;
+  background: var(--gradient-accent);
+}
+
+.doc-step.is-complete .doc-step-label {
+  color: var(--color-ink-soft);
+}
+
+/* Teléfono: solo se lee la etiqueta del paso actual */
+@media (max-width: 479px) {
+  .doc-step:not(.is-active) .doc-step-label {
+    visibility: hidden;
+  }
+
+  .doc-step:first-child.is-active { align-items: flex-start; }
+  .doc-step:last-child.is-active { align-items: flex-end; }
+}
+
+/* --------------------------------------------------------------------------
+   PANELES
+   -------------------------------------------------------------------------- */
+.doc-step-panel {
+  animation: doc-panel-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes doc-panel-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+.doc-step-panel h2 {
+  margin: 0 0 var(--space-1);
+  font-size: clamp(1.5rem, 6vw, 1.875rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.doc-card {
+  margin-bottom: var(--space-3);
+}
+
+.doc-card .form-field:last-child {
+  margin-bottom: 0;
+}
+
+.doc-field-label {
+  margin-bottom: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+/* --------------------------------------------------------------------------
+   PASO 1 — TIPOS DE DOCUMENTO
+   (estilo base de .doc-type-card en components.css)
+   -------------------------------------------------------------------------- */
+.doc-type-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.doc-type-grid .doc-type-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  column-gap: var(--space-3);
+  row-gap: 0.15rem;
+  align-items: center;
+  padding: var(--space-3) 3.25rem var(--space-3) var(--space-3);
+  border-radius: 22px;
+  -webkit-tap-highlight-color: transparent;
+  animation: doc-card-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.doc-type-grid .doc-type-card:nth-child(2) { animation-delay: 0.03s; }
+.doc-type-grid .doc-type-card:nth-child(3) { animation-delay: 0.06s; }
+.doc-type-grid .doc-type-card:nth-child(4) { animation-delay: 0.09s; }
+.doc-type-grid .doc-type-card:nth-child(5) { animation-delay: 0.12s; }
+.doc-type-grid .doc-type-card:nth-child(6) { animation-delay: 0.15s; }
+
+@keyframes doc-card-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+.doc-type-grid .doc-type-card-icon {
+  grid-row: 1 / span 2;
+  margin: 0;
+}
+
+.doc-type-grid .doc-type-card-title {
+  align-self: end;
+  font-size: var(--text-base);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+
+.doc-type-grid .doc-type-card-desc {
+  align-self: start;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+}
+
+/* Marca de selección: círculo vacío → check naranja */
+.doc-type-grid .doc-type-card::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: var(--space-4);
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-top: -0.75rem;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 2px var(--color-line-strong);
+  transition: background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.doc-type-grid .doc-type-card.is-selected::after {
+  background-color: var(--color-accent);
+  box-shadow: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 12.5 4 4 8-9'/%3E%3C/svg%3E");
+  background-position: center;
+  background-size: 0.85rem;
+  background-repeat: no-repeat;
+}
+
+.doc-personalizado {
+  margin-bottom: var(--space-3);
+  animation: doc-panel-in 0.3s ease both;
+}
+
+/* --------------------------------------------------------------------------
+   PASO 2 — PERÍODO
+   -------------------------------------------------------------------------- */
+.doc-period-field {
+  margin-top: var(--space-4);
+}
+
+/* El selector de proyecto no deja espacio extra si no hay período */
+.doc-card > .form-field:first-child {
+  margin-bottom: 0;
+}
+
+.doc-period-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+
+@media (min-width: 480px) {
+  .doc-period-options {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.doc-period-options .filter-chip {
+  min-height: 3rem;
+  padding: 0.5rem;
+  white-space: normal;
+  line-height: 1.2;
+  background-color: var(--color-paper);
+  box-shadow: none;
+}
+
+.doc-period-options .filter-chip.is-active,
+.doc-period-options .filter-chip[aria-pressed="true"] {
+  color: #FFFFFF;
+  background-color: var(--color-ink);
+}
+
+/* --------------------------------------------------------------------------
+   PASO 3 — RESUMEN DE REGISTROS A USAR
+   -------------------------------------------------------------------------- */
+.doc-preview-summary {
+  position: relative;
+  margin: 0;
+  padding: var(--space-3) var(--space-4) var(--space-3) 3.25rem;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--color-accent-ink);
+  background-color: var(--color-accent-soft);
+  border-radius: 18px;
+}
+
+.doc-preview-summary::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: var(--space-3);
+  width: 1.75rem;
+  height: 1.75rem;
+  margin-top: -0.875rem;
+  border-radius: 50%;
+  background-color: #FFFFFF;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A9420B' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 5.5S6 4 12 4s8 1.5 8 1.5v14S18 18 12 18s-8 1.5-8 1.5Z'/%3E%3Cpath d='M12 4v14'/%3E%3C/svg%3E");
+  background-position: center;
+  background-size: 1rem;
+  background-repeat: no-repeat;
+}
+
+.doc-preview-summary:empty {
+  display: none;
+}
+
+/* --------------------------------------------------------------------------
+   PASO 4 — BORRADOR Y EXPORTACIÓN
+   -------------------------------------------------------------------------- */
+.doc-disclaimer {
+  margin: var(--space-2) 0 var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-ink-soft);
+  background-color: var(--color-paper-alt);
+  border-radius: 14px;
+}
+
+.doc-draft-card {
+  padding: var(--space-4);
+}
+
+/* Selector reforzado: .form-field textarea define min-height: 6rem y
+   con menos especificidad esta altura no se aplicaba */
+.doc-draft-card .form-field .doc-draft-textarea {
+  min-height: max(22rem, 55vh);
+  min-height: max(22rem, 55dvh);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.6;
+}
+
+.doc-draft-card .form-field .doc-draft-textarea:disabled {
+  color: var(--color-ink-soft);
+  font-style: italic;
+  background-image: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.7) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: doc-loading 1.4s linear infinite;
+}
+
+@keyframes doc-loading {
+  from { background-position: 100% 0; }
+  to { background-position: -100% 0; }
+}
+
+.doc-export {
+  margin-top: var(--space-4);
+}
+
+.doc-export h3 {
+  margin-bottom: var(--space-2);
+  font-size: var(--text-md);
+  font-weight: 800;
+}
+
+.doc-export-actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-2);
+}
+
+.doc-export-option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: 4.25rem;
+  padding: var(--space-3) var(--space-4) var(--space-3) var(--space-3);
+  text-align: left;
+  background-color: var(--color-surface);
+  border-radius: 20px;
+  box-shadow: var(--shadow-sm);
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.12s ease;
+}
+
+.doc-export-option:active {
+  transform: scale(0.98);
+}
+
+.doc-export-option:disabled {
+  opacity: 0.5;
+}
+
+.doc-export-option > .icon {
+  margin-left: auto;
+  color: var(--color-ink-soft);
+}
+
+.doc-export-badge {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex-shrink: 0;
+  font-size: 0.625rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  border-radius: 12px;
+}
+
+.doc-export-badge--pdf {
+  color: #FFFFFF;
+  background: var(--gradient-accent);
+}
+
+.doc-export-badge--word {
+  color: #FFFFFF;
+  background-color: var(--color-ink);
+}
+
+.doc-export-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.doc-export-title {
+  font-size: var(--text-sm);
+  font-weight: 800;
+  color: var(--color-ink);
+}
+
+.doc-export-desc {
+  font-size: var(--text-xs);
+  color: var(--color-ink-soft);
+}
+
+/* --------------------------------------------------------------------------
+   ACCIONES DEL PASO
+   Teléfono: fijas encima de la barra de navegación, sobre un degradado
+   del lienzo, para no tener que bajar a buscar "Continuar".
+   -------------------------------------------------------------------------- */
+.doc-step-actions {
+  position: sticky;
+  bottom: calc(
+    var(--app-bottom-nav-height) + var(--app-bottom-nav-margin) * 2 +
+    env(safe-area-inset-bottom, 0px)
+  );
+  z-index: 30;
+  display: flex;
+  gap: var(--space-2);
+  margin: var(--space-4) calc(var(--space-4) * -1) 0;
+  padding: var(--space-5) var(--space-4) var(--space-2);
+  background: linear-gradient(180deg, rgba(244, 243, 240, 0) 0%, var(--color-paper) 40%);
+}
+
+.doc-step-actions .btn {
+  flex: 1;
+}
+
+.doc-step-actions .btn-secondary {
+  flex: 0 1 auto;
+  min-width: 6.5rem;
+}
+
+/* En el borrador no se fijan: el texto largo necesita todo el alto */
+.doc-step-actions--static {
+  position: static;
+  background: none;
+}
+
+.doc-step-actions--static .btn-secondary {
+  flex: 1;
+}
+
+/* --------------------------------------------------------------------------
+   PLANTILLAS
+   -------------------------------------------------------------------------- */
+.plantillas-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-2);
+  margin: 0 0 var(--space-4);
+  padding: 0;
+  list-style: none;
+}
+
+.plantilla-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 4.5rem;
+  padding: var(--space-3) 3.5rem var(--space-3) var(--space-3);
+  background-color: var(--color-surface);
+  border-radius: 20px;
+  box-shadow: var(--shadow-sm);
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.12s ease;
+}
+
+.plantilla-card:active {
+  transform: scale(0.99);
+}
+
+/* Flecha ↗ (la plantilla se abre en otra pestaña) */
+.plantilla-card::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: var(--space-3);
+  width: 2.25rem;
+  height: 2.25rem;
+  margin-top: -1.125rem;
+  border-radius: 50%;
+  background-color: var(--color-paper);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2315161A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 17 17 7'/%3E%3Cpath d='M8.5 7H17v8.5'/%3E%3C/svg%3E");
+  background-position: center;
+  background-size: 0.95rem;
+  background-repeat: no-repeat;
+}
+
+.plantilla-card-icon {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+}
+
+.plantilla-card-icon svg {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.plantilla-card-textos {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.plantilla-card-title {
+  font-size: var(--text-sm);
+  font-weight: 800;
+  color: var(--color-ink);
+  overflow-wrap: anywhere;
+}
+
+.plantilla-card-meta {
+  font-size: var(--text-xs);
+  color: var(--color-ink-soft);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.documentos-body .empty-state .eyebrow {
+  margin-bottom: 0;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--color-accent-ink);
+}
+
+/* --------------------------------------------------------------------------
+   ETAPA 1 — CATÁLOGO AGRUPADO
+   -------------------------------------------------------------------------- */
+.doc-type-group {
+  grid-column: 1 / -1;
+  margin: var(--space-3) 0 0 var(--space-1);
+  font-size: var(--text-xs);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+}
+
+.doc-type-group:first-child {
+  margin-top: 0;
+}
+
+/* --------------------------------------------------------------------------
+   ETAPA 1 — CAMPOS PROPIOS DEL DOCUMENTO
+   -------------------------------------------------------------------------- */
+.doc-campos-titulo {
+  margin-bottom: var(--space-3);
+  font-weight: 800;
+}
+
+.doc-campos .form-field:last-child {
+  margin-bottom: 0;
+}
+
+.doc-opcional {
+  font-weight: 500;
+  color: var(--color-ink-faint);
+}
+
+/* --------------------------------------------------------------------------
+   ETAPA 1 — VERIFICACIÓN DE DATOS
+   -------------------------------------------------------------------------- */
+.doc-verificacion {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-3);
+  padding: 0;
+  list-style: none;
+}
+
+.doc-verif-item {
+  position: relative;
+  padding: 0.8rem var(--space-4) 0.8rem 3rem;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--color-ink);
+  background-color: var(--color-surface);
+  border-radius: 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.doc-verif-item::before {
+  content: "";
+  position: absolute;
+  top: 0.8rem;
+  left: var(--space-3);
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 50%;
+  background-position: center;
+  background-size: 0.8rem;
+  background-repeat: no-repeat;
+}
+
+.doc-verif-item.is-ok::before {
+  background-color: var(--color-success);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 12.5 4 4 8-9'/%3E%3C/svg%3E");
+}
+
+.doc-verif-item.is-aviso::before {
+  background-color: var(--color-accent);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.2' stroke-linecap='round'%3E%3Cpath d='M12 6v7'/%3E%3Cpath d='M12 18h.01'/%3E%3C/svg%3E");
+}
+
+.doc-verif-item.is-falta {
+  color: var(--color-danger);
+  background-color: var(--color-danger-soft);
+  box-shadow: none;
+}
+
+.doc-verif-item.is-falta::before {
+  background-color: var(--color-danger);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.2' stroke-linecap='round'%3E%3Cpath d='M7 7l10 10M17 7 7 17'/%3E%3C/svg%3E");
+}
+
+.doc-verif-item.is-cargando {
+  color: var(--color-ink-soft);
+}
+
+.doc-verif-item.is-cargando::before {
+  border: 2.5px solid var(--color-line-strong);
+  border-top-color: var(--color-accent);
+  animation: doc-spin 0.8s linear infinite;
+}
+
+@keyframes doc-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* --------------------------------------------------------------------------
+   ETAPA 1 — VISTA PREVIA DEL DOCUMENTO (hoja editable)
+   -------------------------------------------------------------------------- */
+.doc-pendientes {
+  position: sticky;
+  top: calc(var(--app-topbar-height) + env(safe-area-inset-top, 0px));
+  z-index: 20;
+  margin: var(--space-2) 0 var(--space-3);
+  padding: 0.7rem var(--space-4);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--color-accent-ink);
+  background-color: var(--color-accent-soft);
+  border-radius: 14px;
+  box-shadow: var(--shadow-sm);
+}
+
+.doc-pendientes.is-listo {
+  color: var(--color-success);
+  background-color: var(--color-success-soft);
+}
+
+.doc-paper {
+  padding: var(--space-5) var(--space-4);
+  font-family: Georgia, "Times New Roman", Times, serif;
+  color: #1A1A1A;
+  background-color: #FFFFFF;
+  border-radius: 18px;
+  box-shadow: var(--shadow-md);
+  overflow-wrap: anywhere;
+}
+
+.doc-paper-code {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 800;
+  text-align: right;
+  color: var(--color-ink-soft);
+}
+
+.doc-paper-title {
+  margin: var(--space-2) 0 var(--space-4);
+  font-family: inherit;
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+
+.doc-paper-meta {
+  margin: 0 0 var(--space-5);
+  border: 1px solid #1A1A1A;
+}
+
+.doc-paper-meta-row {
+  display: grid;
+  grid-template-columns: minmax(6.5rem, 32%) minmax(0, 1fr);
+}
+
+.doc-paper-meta-row + .doc-paper-meta-row {
+  border-top: 1px solid #1A1A1A;
+}
+
+.doc-paper-meta dt,
+.doc-paper-meta dd {
+  margin: 0;
+  padding: 0.4rem 0.55rem;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.doc-paper-meta dt {
+  font-weight: 700;
+  background-color: #F2F2F2;
+  border-right: 1px solid #1A1A1A;
+}
+
+.doc-paper-section {
+  margin-bottom: var(--space-4);
+}
+
+.doc-paper-section h4 {
+  margin-bottom: var(--space-2);
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.doc-b--parrafo {
+  margin-bottom: var(--space-2);
+  font-size: 0.95rem;
+  line-height: 1.65;
+  text-align: justify;
+  hyphens: auto;
+}
+
+.doc-b--lista {
+  margin: 0 0 var(--space-3) 1.2rem;
+  padding: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.doc-b--alerta {
+  margin-bottom: var(--space-3);
+  padding: 0.6rem 0.8rem;
+  font-size: 0.875rem;
+  font-style: italic;
+  line-height: 1.5;
+  background-color: #F4F4F4;
+  border: 1px solid #1A1A1A;
+  border-left-width: 4px;
+}
+
+.doc-paper-section.is-advertencia .doc-b--alerta {
+  font-style: normal;
+  font-family: var(--font-body);
+  font-weight: 600;
+  color: var(--color-accent-ink);
+  background-color: var(--color-accent-soft);
+  border: 0;
+  border-radius: 12px;
+}
+
+.doc-table-wrap {
+  margin-bottom: var(--space-3);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.doc-b--tabla {
+  width: 100%;
+  min-width: 18rem;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.doc-b--tabla th,
+.doc-b--tabla td {
+  padding: 0.4rem 0.5rem;
+  text-align: left;
+  vertical-align: top;
+  border: 1px solid #1A1A1A;
+}
+
+.doc-b--tabla th {
+  font-weight: 700;
+  background-color: #EBEBEB;
+}
+
+.doc-paper-firmas {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-6) var(--space-4);
+  margin-top: var(--space-6);
+}
+
+.doc-firma {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  font-size: 0.85rem;
+}
+
+.doc-firma-linea {
+  height: 2.5rem;
+  margin-bottom: 0.3rem;
+  border-bottom: 1px solid #1A1A1A;
+}
+
+.doc-firma-nombre {
+  font-weight: 700;
+}
+
+.doc-firma-cargo {
+  color: #555555;
+}
+
+.doc-paper-fuentes {
+  margin-top: var(--space-6);
+  padding-top: var(--space-3);
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  color: var(--color-ink-soft);
+  border-top: 1px solid var(--color-line);
+}
+
+.doc-paper-fuentes summary {
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.doc-paper-fuentes ul {
+  margin: var(--space-2) 0 0 1rem;
+  line-height: 1.6;
+}
+
+/* Datos pendientes resaltados */
+.doc-ph {
+  padding: 0 0.15em;
+  font-family: var(--font-body);
+  font-size: 0.92em;
+  font-weight: 700;
+  font-style: normal;
+  color: var(--color-accent-ink);
+  background-color: var(--color-accent-soft);
+  border-radius: 4px;
+}
+
+/* Texto editable */
+.doc-paper [contenteditable="true"] {
+  border-radius: 4px;
+  outline: none;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.doc-paper [contenteditable="true"]:focus {
+  background-color: #FFF8F3;
+  box-shadow: 0 0 0 2px var(--color-accent);
+}
+
+/* Mientras se redacta */
+.doc-generando {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-6) var(--space-5);
+  background-color: var(--color-surface);
+  border-radius: 18px;
+  box-shadow: var(--shadow-sm);
+}
+
+.doc-generando-titulo {
+  font-size: var(--text-md);
+  font-weight: 800;
+  color: var(--color-ink);
+}
+
+.doc-generando-detalle {
+  margin-bottom: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-ink-soft);
+}
+
+.doc-generando-linea {
+  height: 0.75rem;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, var(--color-paper) 0%, var(--color-paper-alt) 50%, var(--color-paper) 100%);
+  background-size: 200% 100%;
+  animation: doc-loading 1.4s linear infinite;
+}
+
+.doc-generando-linea.is-corta {
+  width: 60%;
+}
+
+@media (min-width: 640px) {
+  .doc-paper {
+    padding: var(--space-7) var(--space-7);
+  }
+
+  .doc-paper-title {
+    font-size: 1.35rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .doc-generando-linea,
+  .doc-verif-item.is-cargando::before {
+    animation: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   TABLET Y ESCRITORIO
+   -------------------------------------------------------------------------- */
+@media (min-width: 640px) {
+  .doc-type-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3);
+  }
+
+  .doc-type-grid .doc-type-card {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto auto;
+    align-items: start;
+    padding: var(--space-5) var(--space-5) var(--space-4);
+  }
+
+  .doc-type-grid .doc-type-card-icon {
+    grid-row: auto;
+    margin-bottom: var(--space-2);
+  }
+
+  .doc-type-grid .doc-type-card::after {
+    top: var(--space-5);
+    margin-top: 0;
+  }
+
+  .doc-type-grid .doc-type-card-desc {
+    font-size: var(--text-sm);
+  }
+
+  .doc-export-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .plantillas-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3);
+  }
+
+  .doc-step-actions {
+    justify-content: flex-end;
+  }
+
+  .doc-step-actions .btn {
+    flex: 0 0 auto;
+    min-width: 10rem;
+  }
+}
+
+/* Teléfono en horizontal: acciones normales (no fijas), hay poca altura */
+@media (max-height: 500px) and (orientation: landscape) {
+  .doc-step-actions {
+    position: static;
+    background: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .doc-step-panel,
+  .doc-type-grid .doc-type-card,
+  .doc-personalizado,
+  .doc-draft-card .form-field .doc-draft-textarea:disabled {
+    animation: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   MEMBRETE EN LA VISTA PREVIA
+   -------------------------------------------------------------------------- */
+.doc-paper-membrete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-3);
+  border-bottom: 1.5px solid #1A1A1A;
+}
+
+.doc-paper-logo {
+  flex-shrink: 0;
+  max-width: 40%;
+  max-height: 3.25rem;
+  object-fit: contain;
+}
+
+.doc-paper-membrete-datos {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  min-width: 0;
+  margin-left: auto;
+  font-size: 0.75rem;
+  line-height: 1.35;
+  text-align: right;
+  color: #444444;
+}
+
+.doc-paper-membrete-datos strong {
+  font-size: 0.9rem;
+  color: #1A1A1A;
+}
+
+.doc-membrete-aviso {
+  margin-top: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--color-ink-soft);
+  background-color: var(--color-surface);
+  border-radius: 14px;
+  box-shadow: var(--shadow-sm);
+}
+
+.doc-membrete-aviso a {
+  font-weight: 800;
+  color: var(--color-accent-ink);
+  border-bottom: 1px solid currentColor;
+}
+
+/* Aviso bajo el nombre del trabajador */
+.doc-personal-hint {
+  margin: 0 0 var(--space-2);
+  padding: 0.5rem 0.7rem;
+  font-weight: 600;
+  color: var(--color-accent-ink);
+  background-color: var(--color-accent-soft);
+  border-radius: 10px;
+}
+
+.doc-personal-hint.is-ok {
+  color: var(--color-success);
+  background-color: var(--color-success-soft);
+}

@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Cargando proyecto… — B-Civil</title>
+  <meta name="description" content="Espacio de trabajo del proyecto: información, plazo del contrato, actividad reciente y acceso a bitácora, documentos y asistente.">
+  <meta name="theme-color" content="#F4F3F0">
+
+  <link rel="icon" href="../../img/icons/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../img/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../img/icons/favicon-16x16.png">
+  <link rel="manifest" href="../../manifest.json">
+  <link rel="apple-touch-icon" href="../../img/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="B-Civil">
+
+  <link rel="stylesheet" href="../../css/main.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+  <link rel="stylesheet" href="../../css/icons.css">
+  <link rel="stylesheet" href="../../css/app-shell.css">
+  <link rel="stylesheet" href="../../css/proyectos.css">
+</head>
+<body class="app-body proyectos-body app-has-dock" data-nav-section="proyectos">
+
+  <a class="skip-link" href="#contenido-principal">Saltar al contenido principal</a>
+
+  <div class="app-shell">
+
+    <header class="app-topbar proyectos-topbar">
+      <a class="app-topbar-home" href="index.html" aria-label="Volver a proyectos">
+        <span class="icon" data-icon="volver" aria-hidden="true"></span>
+      </a>
+      <div class="app-topbar-project">
+        <span class="app-topbar-eyebrow">Proyectos</span>
+        <span class="app-topbar-project-name">Espacio de trabajo</span>
+      </div>
+      <!-- Editar, archivar y eliminar (proyecto.js crea el menú aquí) -->
+      <div class="context-menu" id="proyecto-acciones">
+        <button
+          type="button"
+          class="icon-btn icon-btn--surface"
+          id="proyecto-acciones-trigger"
+          aria-haspopup="true"
+          aria-expanded="false"
+          aria-label="Más acciones del proyecto"
+        >
+          <span class="icon" data-icon="mas-opciones" aria-hidden="true"></span>
+        </button>
+      </div>
+    </header>
+
+    <div class="app-content">
+      <main id="contenido-principal" class="app-main proyecto-main">
+
+        <div id="proyecto-contenido" class="proyecto-layout">
+
+          <div class="proyecto-col proyecto-col-main">
+
+            <!-- Encabezado del proyecto -->
+            <header class="card workspace-header">
+              <div class="workspace-header-row">
+                <div class="workspace-header-info">
+                  <span class="status-badge status-badge-activo" id="proyecto-estado-badge">—</span>
+                  <h1 id="proyecto-nombre">Cargando proyecto…</h1>
+                  <p class="workspace-location">
+                    <span class="icon" data-icon="ubicacion" aria-hidden="true"></span>
+                    <span id="proyecto-ubicacion-meta">—</span>
+                  </p>
+                </div>
+              </div>
+
+              <!-- Plazo del contrato: solo si hay fechas de inicio y vencimiento (proyecto.js) -->
+              <div class="workspace-term" id="proyecto-plazo" hidden>
+                <div class="workspace-term-figures">
+                  <span class="stat-number stat-number--md" id="proyecto-plazo-porcentaje">0<small>%</small></span>
+                  <span class="workspace-term-label">del plazo del contrato de obra</span>
+                  <span class="status-pill status-pill--progress" id="proyecto-plazo-estado">—</span>
+                </div>
+                <div class="hatch-bar" id="proyecto-plazo-barra" style="--value: 0"><span></span></div>
+                <div class="workspace-term-dates">
+                  <span id="proyecto-plazo-inicio">—</span>
+                  <span id="proyecto-plazo-fin">—</span>
+                </div>
+              </div>
+            </header>
+
+            <!-- Información básica -->
+            <section class="card workspace-info" aria-labelledby="workspace-info-titulo">
+              <h2 id="workspace-info-titulo">Información básica</h2>
+              <dl class="info-list">
+                <div class="info-item">
+                  <dt>Ubicación</dt>
+                  <dd id="info-ubicacion">—</dd>
+                </div>
+                <div class="info-item">
+                  <dt>Estado</dt>
+                  <dd id="info-estado">—</dd>
+                </div>
+                <div class="info-item">
+                  <dt>Fecha de inicio</dt>
+                  <dd id="info-fecha-inicio">—</dd>
+                </div>
+                <div class="info-item info-item--wide">
+                  <dt>Descripción</dt>
+                  <dd id="info-descripcion">—</dd>
+                </div>
+              </dl>
+            </section>
+
+            <!-- Datos del contrato (alimentan el informe de interventoría) -->
+            <section class="card workspace-info" aria-labelledby="workspace-contrato-titulo">
+              <div class="section-header-row">
+                <h2 id="workspace-contrato-titulo">Datos del contrato</h2>
+                <button type="button" class="pill-btn" id="btn-editar-contrato">
+                  <span class="icon" data-icon="novedad" aria-hidden="true"></span>
+                  Editar
+                </button>
+              </div>
+
+              <details class="contract-group" open>
+                <summary id="contrato-eyebrow">Información general</summary>
+                <dl class="info-list">
+                  <div class="info-item">
+                    <dt>Entidad contratante</dt>
+                    <dd id="contrato-entidad">Sin registrar</dd>
+                  </div>
+                  <div class="info-item">
+                    <dt>Supervisor del contrato</dt>
+                    <dd id="contrato-supervisor">Sin registrar</dd>
+                  </div>
+                  <div class="info-item">
+                    <dt>Director de interventoría</dt>
+                    <dd id="contrato-director">Sin registrar</dd>
+                  </div>
+                  <div class="info-item info-item--wide">
+                    <dt>Alcance físico contractual</dt>
+                    <dd id="contrato-alcance">Sin registrar</dd>
+                  </div>
+                </dl>
+              </details>
+
+              <details class="contract-group">
+                <summary>Contrato de obra</summary>
+                <dl class="info-list">
+                  <div class="info-item">
+                    <dt>Número de contrato</dt>
+                    <dd id="contrato-obra-numero">Sin registrar</dd>
+                  </div>
+                  <div class="info-item">
+                    <dt>Contratista</dt>
+                    <dd id="contrato-obra-contratista">Sin registrar</dd>
+                  </div>
+                  <div class="info-item">
+                    <dt>NIT del contratista</dt>
+                    <dd id="contrato-obra-nit">Sin registrar</dd>
+                  </div>
+                  <div class="info-item">
+                    <dt>Valor inicial</dt>
+                    <dd id="contrato-obra-valor">Sin registrar</dd>
+                  </div>
+                  <div class="info-item info-item--wide">
+                    <dt>Objeto del contrato</dt>
+                    <dd id="contrato-obra-objeto">Sin registrar</dd>
+                  </div>
+                  <div class="info-item">
+                    <dt>Fecha de inicio</dt>
+                    <dd id="contrato-obra-fecha-inicio">Sin registrar</dd>
+                  </div>
+                  <div class="info-item">
+                    <dt>Vencimiento inicial</dt>
+                    <dd id="contrato-obra-venc-inicial">Sin registrar</dd>
+                  </div>
+                  <div class="info-item">
+                    <dt>Vencimiento vigente</dt>
+                    <dd id="contrato-obra-venc-vigente">Sin registrar</dd>
+                  </div>
+                </dl>
+              </details>
+
+              <details class="contract-group">
+                <summary>Contrato de interventoría</summary>
+                <dl class="info-list">
+                  <div class="info-item">
+                    <dt>Número de contrato</dt>
+                    <dd id="contrato-interv-numero">Sin registrar</dd>
+                  </div>
+                  <div class="info-item">
+                    <dt>Interventor</dt>
+                    <dd id="contrato-interv-nombre">Sin registrar</dd>
+                  </div>
+                  <div class="info-item">
+                    <dt>NIT del interventor</dt>
+                    <dd id="contrato-interv-nit">Sin registrar</dd>
+                  </div>
+                  <div class="info-item info-item--wide">
+                    <dt>Objeto del contrato</dt>
+                    <dd id="contrato-interv-objeto">Sin registrar</dd>
+                  </div>
+                  <div class="info-item">
+                    <dt>Fecha de inicio</dt>
+                    <dd id="contrato-interv-fecha-inicio">Sin registrar</dd>
+                  </div>
+                  <div class="info-item">
+                    <dt>Vencimiento</dt>
+                    <dd id="contrato-interv-venc">Sin registrar</dd>
+                  </div>
+                </dl>
+              </details>
+            </section>
+
+            <!-- Personal del proyecto (personal.js) -->
+            <section class="card workspace-info personal-section" aria-labelledby="workspace-personal-titulo">
+              <div class="section-header-row">
+                <h2 id="workspace-personal-titulo">Personal del proyecto <span class="personal-count" id="personal-count"></span></h2>
+                <button type="button" class="pill-btn" id="personal-agregar-btn">
+                  <span class="icon" data-icon="agregar" aria-hidden="true"></span>
+                  Agregar
+                </button>
+              </div>
+
+              <p class="workspace-help">
+                Con esta lista, los documentos laborales (incapacidades, descargos, reportes de incidente) completan solos la cédula, el cargo, la EPS y la ARL del trabajador.
+              </p>
+
+              <ul class="personal-list" id="personal-lista" role="list" hidden></ul>
+
+              <p id="personal-vacio" class="workspace-empty">
+                Todavía no has registrado personal en este proyecto.
+              </p>
+            </section>
+
+            <!-- Cantidades y presupuesto (documentos-proyecto.js) -->
+            <section class="card workspace-info" aria-labelledby="workspace-cantidades-titulo">
+              <div class="section-header-row">
+                <h2 id="workspace-cantidades-titulo">Cantidades y presupuesto</h2>
+                <div>
+                  <input type="file" id="cantidades-file-input" accept=".xlsx,.xls,.pdf" class="visually-hidden">
+                  <button type="button" class="pill-btn" id="cantidades-upload-btn">
+                    <span class="icon" data-icon="agregar" aria-hidden="true"></span>
+                    Subir archivo
+                  </button>
+                </div>
+              </div>
+
+              <p class="workspace-help">
+                Sube tu Excel de cantidades de obra o tu PDF de presupuesto tal como los tienes. Se usan al generar informes de interventoría.
+              </p>
+
+              <ul class="projects-grid cantidades-list" id="cantidades-lista" role="list" hidden></ul>
+
+              <p id="cantidades-empty-state" class="workspace-empty">
+                Todavía no has subido ningún archivo de cantidades o presupuesto.
+              </p>
+            </section>
+
+          </div>
+
+          <div class="proyecto-col proyecto-col-side">
+
+            <!-- Accesos del proyecto -->
+            <section class="workspace-links" aria-labelledby="workspace-links-titulo">
+              <h2 id="workspace-links-titulo" class="visually-hidden">Espacios de trabajo</h2>
+              <ul class="workspace-links-grid" role="list">
+                <li>
+                  <a class="workspace-link-card" href="#" id="link-bitacora-proyecto">
+                    <span class="icon-badge icon-badge--accent"><span class="icon" data-icon="bitacora" aria-hidden="true"></span></span>
+                    <span class="workspace-link-text">
+                      <span class="workspace-link-title">Bitácora</span>
+                      <span class="workspace-link-desc">Historial completo del proyecto</span>
+                    </span>
+                    <span class="workspace-link-arrow icon" data-icon="flecha" aria-hidden="true"></span>
+                  </a>
+                </li>
+                <li>
+                  <a class="workspace-link-card" href="#" id="link-documentos-proyecto">
+                    <span class="icon-badge"><span class="icon" data-icon="documentos" aria-hidden="true"></span></span>
+                    <span class="workspace-link-text">
+                      <span class="workspace-link-title">Documentos</span>
+                      <span class="workspace-link-desc">Genera informes con tus registros</span>
+                    </span>
+                    <span class="workspace-link-arrow icon" data-icon="flecha" aria-hidden="true"></span>
+                  </a>
+                </li>
+                <li>
+                  <a class="workspace-link-card" href="#" id="link-asistente-proyecto">
+                    <span class="icon-badge"><span class="icon" data-icon="asistente" aria-hidden="true"></span></span>
+                    <span class="workspace-link-text">
+                      <span class="workspace-link-title">Asistente</span>
+                      <span class="workspace-link-desc">Pregunta sobre lo registrado</span>
+                    </span>
+                    <span class="workspace-link-arrow icon" data-icon="flecha" aria-hidden="true"></span>
+                  </a>
+                </li>
+              </ul>
+            </section>
+
+            <!-- Actividad reciente -->
+            <section class="card activity-feed" aria-labelledby="activity-titulo">
+              <div class="section-header">
+                <h2 id="activity-titulo">Actividad reciente</h2>
+                <a href="#" id="link-ver-bitacora-actividad">Ver bitácora</a>
+              </div>
+              <ol class="list activity-list" id="activity-list"></ol>
+              <p class="workspace-empty" id="activity-empty-message" hidden>
+                Todavía no hay registros en la bitácora de este proyecto.
+              </p>
+            </section>
+
+          </div>
+
+        </div>
+
+        <div class="card empty-state" id="proyecto-no-encontrado" hidden>
+          <span class="icon-badge"><span class="icon" data-icon="proyectos" aria-hidden="true"></span></span>
+          <p class="eyebrow">Proyecto no encontrado</p>
+          <h3>No pudimos encontrar este proyecto</h3>
+          <p>Es posible que haya sido eliminado o que no tengas acceso a él.</p>
+          <a class="btn btn-primary" href="index.html">Ver proyectos</a>
+        </div>
+
+      </main>
+    </div>
+
+    <nav class="app-nav" id="app-nav" aria-label="Navegación principal">
+      <ul class="app-nav-list">
+        <li class="app-nav-item">
+          <a class="app-nav-link" href="../dashboard.html" title="Inicio">
+            <span class="icon" data-icon="inicio" aria-hidden="true"></span>
+            <span class="app-nav-label">Inicio</span>
+          </a>
+        </li>
+        <li class="app-nav-item">
+          <a class="app-nav-link" href="../bitacora/bitacora.html" id="dock-bitacora-proyecto" title="Bitácora">
+            <span class="icon" data-icon="bitacora" aria-hidden="true"></span>
+            <span class="app-nav-label">Bitácora</span>
+          </a>
+        </li>
+        <li class="app-nav-item">
+          <a class="app-nav-link" href="index.html" data-section="proyectos" title="Proyectos">
+            <span class="icon" data-icon="proyectos" aria-hidden="true"></span>
+            <span class="app-nav-label">Proyectos</span>
+          </a>
+        </li>
+        <li class="app-nav-item">
+          <a class="app-nav-link" href="../documentos/documentos.html" title="Documentos">
+            <span class="icon" data-icon="documentos" aria-hidden="true"></span>
+            <span class="app-nav-label">Documentos</span>
+          </a>
+        </li>
+        <li class="app-nav-item">
+          <a class="app-nav-link" href="../chat/asistente.html" title="Asistente">
+            <span class="icon" data-icon="asistente" aria-hidden="true"></span>
+            <span class="app-nav-label">Asistente</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+  </div>
+
+  <script type="module" src="../../js/proyectos/proyecto.js" defer></script>
+  <script type="module" src="../../js/registro-global.js" defer></script>
+  <script type="module" src="../../js/sw-register.js" defer></script>
+</body>
+</html>

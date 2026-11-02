@@ -1,0 +1,386 @@
+/* ==========================================================================
+   BIENVENIDA.CSS — Portada de B-Civil (index.html)
+   Teléfono: la foto de obra ocupa la parte superior y se funde con un
+   fondo carbón donde van la marca, el título y los dos botones.
+   Tablet y escritorio: la foto ocupa toda la pantalla y el contenido
+   queda abajo a la izquierda sobre un velo oscuro.
+   Hoja independiente: esta página no carga los estilos de la app.
+   ========================================================================== */
+
+:root {
+  --w-bg: #0E1013;
+  --w-ink: #FFFFFF;
+  --w-ink-soft: rgba(255, 255, 255, 0.74);
+  --w-ink-faint: rgba(255, 255, 255, 0.52);
+  --w-accent: #F26A21;
+  --w-accent-gradient: linear-gradient(160deg, #FF9150 0%, #F26A21 55%, #E4561A 100%);
+  --w-font: "Plus Jakarta Sans", -apple-system, "Segoe UI", Roboto, sans-serif;
+  --w-font-brand: "Archivo", "Arial Black", Arial, sans-serif;
+  --w-ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Línea de tiempo de la entrada (primera visita de la sesión) */
+  --w-t-photo: 1.4s;
+  --w-t-content: 0.35s;
+}
+
+.bc-no-splash {
+  --w-t-photo: 0.6s;
+  --w-t-content: 0s;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body.welcome-body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  font-family: var(--w-font);
+  color: var(--w-ink);
+  background-color: var(--w-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:focus-visible {
+  outline: 2px solid var(--w-accent);
+  outline-offset: 3px;
+  border-radius: 12px;
+}
+
+/* --------------------------------------------------------------------------
+   ESTRUCTURA (teléfono)
+   -------------------------------------------------------------------------- */
+.welcome {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Foto: ocupa la parte superior y se funde con el fondo */
+.welcome-photo {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 68%;
+  z-index: -1;
+  background-color: #2A2D33;
+  background-image: url("../img/bg-obra-hero.jpg");
+  background-size: cover;
+  background-position: center 40%;
+  animation: welcome-photo-in var(--w-t-photo) var(--w-ease) both;
+}
+
+.welcome-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg,
+      rgba(14, 16, 19, 0.35) 0%,
+      rgba(14, 16, 19, 0) 22%,
+      rgba(14, 16, 19, 0) 45%,
+      rgba(14, 16, 19, 0.75) 78%,
+      var(--w-bg) 100%);
+}
+
+@keyframes welcome-photo-in {
+  from { opacity: 0; transform: scale(1.08); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Panel de contenido */
+.welcome-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 30rem;
+  margin: 0 auto;
+  padding: 0 1.5rem calc(1.75rem + env(safe-area-inset-bottom, 0px));
+}
+
+.welcome-panel > * {
+  animation: welcome-rise 0.8s var(--w-ease) both;
+}
+
+.welcome-panel > :nth-child(1) { animation-delay: calc(var(--w-t-content) + 0s); }
+.welcome-panel > :nth-child(2) { animation-delay: calc(var(--w-t-content) + 0.08s); }
+.welcome-panel > :nth-child(3) { animation-delay: calc(var(--w-t-content) + 0.16s); }
+.welcome-panel > :nth-child(4) { animation-delay: calc(var(--w-t-content) + 0.24s); }
+.welcome-panel > :nth-child(5) { animation-delay: calc(var(--w-t-content) + 0.32s); }
+
+@keyframes welcome-rise {
+  from { opacity: 0; transform: translateY(18px); filter: blur(6px); }
+  to { opacity: 1; transform: none; filter: blur(0); }
+}
+
+/* --------------------------------------------------------------------------
+   MARCA
+   -------------------------------------------------------------------------- */
+.welcome-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 1.25rem;
+}
+
+.welcome-iso {
+  width: 3.25rem;
+  height: auto;
+  color: var(--w-ink);
+}
+
+.welcome-iso-accent {
+  fill: var(--w-accent);
+}
+
+.welcome-wordmark {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--w-font-brand);
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: 1.15rem;
+  letter-spacing: 0.1em;
+  line-height: 1;
+}
+
+.welcome-dash {
+  display: inline-block;
+  width: 0.5em;
+  height: 0.17em;
+  margin: 0 0.24em 0 0.12em;
+  background-color: var(--w-accent);
+}
+
+/* --------------------------------------------------------------------------
+   TEXTOS
+   -------------------------------------------------------------------------- */
+.welcome-title {
+  font-size: clamp(2.75rem, 13vw, 4rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1;
+}
+
+.welcome-text {
+  max-width: 24rem;
+  margin-top: 0.85rem;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--w-ink-soft);
+}
+
+/* --------------------------------------------------------------------------
+   BOTONES
+   -------------------------------------------------------------------------- */
+.welcome-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+.welcome-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3.5rem;
+  padding: 0.9rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 16px;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.14s var(--w-ease), background-color 0.2s ease, filter 0.2s ease;
+}
+
+.welcome-btn:active {
+  transform: scale(0.97);
+}
+
+.welcome-btn--primary {
+  color: #FFFFFF;
+  background: var(--w-accent-gradient);
+  box-shadow: 0 14px 30px -12px rgba(242, 106, 33, 0.75);
+}
+
+.welcome-btn--primary:hover {
+  filter: brightness(1.05);
+}
+
+.welcome-btn--secondary {
+  color: var(--w-ink);
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  -webkit-backdrop-filter: blur(12px);
+          backdrop-filter: blur(12px);
+}
+
+.welcome-btn--secondary:hover {
+  background-color: rgba(255, 255, 255, 0.14);
+}
+
+.welcome-legal {
+  margin-top: 1.25rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--w-ink-faint);
+}
+
+.welcome-legal a {
+  font-weight: 700;
+  color: var(--w-ink-soft);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+/* --------------------------------------------------------------------------
+   TELÉFONO PEQUEÑO (poca altura): la foto cede espacio
+   -------------------------------------------------------------------------- */
+@media (max-height: 640px) {
+  .welcome-photo {
+    height: 58%;
+  }
+
+  .welcome-brand {
+    margin-bottom: 0.9rem;
+  }
+
+  .welcome-iso {
+    width: 2.75rem;
+  }
+
+  .welcome-actions {
+    margin-top: 1.5rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   TABLET Y ESCRITORIO (y teléfono en horizontal):
+   foto a pantalla completa, contenido abajo a la izquierda
+   -------------------------------------------------------------------------- */
+@media (min-width: 768px), (orientation: landscape) and (max-height: 500px) {
+  .welcome-photo {
+    inset: 0;
+    height: auto;
+    background-position: center;
+  }
+
+  .welcome-photo::after {
+    background:
+      linear-gradient(90deg, rgba(14, 16, 19, 0.88) 0%, rgba(14, 16, 19, 0.55) 45%, rgba(14, 16, 19, 0.15) 100%),
+      linear-gradient(180deg, rgba(14, 16, 19, 0) 50%, rgba(14, 16, 19, 0.6) 100%);
+  }
+
+  .welcome {
+    justify-content: flex-end;
+  }
+
+  .welcome-panel {
+    max-width: 34rem;
+    margin: 0;
+    padding: 3rem clamp(2rem, 7vw, 6rem) calc(clamp(2.5rem, 8vh, 5rem) + env(safe-area-inset-bottom, 0px));
+  }
+
+  .welcome-actions {
+    flex-direction: row;
+  }
+
+  .welcome-btn {
+    flex: 1;
+  }
+
+  .welcome-legal {
+    text-align: left;
+  }
+}
+
+/* Escritorio: título y texto con más presencia */
+@media (min-width: 1024px) and (min-height: 700px) {
+  .welcome-panel {
+    max-width: 40rem;
+  }
+
+  .welcome-title {
+    font-size: clamp(4rem, 6vw, 5.5rem);
+  }
+
+  .welcome-text {
+    max-width: 30rem;
+    font-size: 1.125rem;
+  }
+
+  .welcome-iso {
+    width: 4rem;
+  }
+
+  .welcome-wordmark {
+    font-size: 1.35rem;
+  }
+}
+
+/* Teléfono en horizontal: todo más compacto para que quepa */
+@media (orientation: landscape) and (max-height: 500px) {
+  .welcome-panel {
+    padding-top: 1.25rem;
+    padding-bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  .welcome-brand {
+    margin-bottom: 0.6rem;
+  }
+
+  .welcome-iso {
+    width: 2.25rem;
+  }
+
+  .welcome-title {
+    font-size: 2.25rem;
+  }
+
+  .welcome-text {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+  }
+
+  .welcome-actions {
+    margin-top: 1rem;
+  }
+
+  .welcome-btn {
+    min-height: 3rem;
+  }
+
+  .welcome-legal {
+    margin-top: 0.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .welcome-photo,
+  .welcome-panel > * {
+    animation: none;
+  }
+
+  .welcome-btn:active {
+    transform: none;
+  }
+}

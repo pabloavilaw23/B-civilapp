@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Documentos — B-Civil</title>
+  <meta name="description" content="Genera documentos con base en tu bitácora, o consulta plantillas de referencia.">
+  <meta name="theme-color" content="#F4F3F0">
+
+  <link rel="icon" href="../../img/icons/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../img/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../img/icons/favicon-16x16.png">
+  <link rel="manifest" href="../../manifest.json">
+  <link rel="apple-touch-icon" href="../../img/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="B-Civil">
+
+  <link rel="stylesheet" href="../../css/main.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+  <link rel="stylesheet" href="../../css/icons.css">
+  <link rel="stylesheet" href="../../css/app-shell.css">
+  <link rel="stylesheet" href="../../css/documentos.css">
+</head>
+<body class="app-body documentos-body">
+
+  <a class="skip-link" href="#contenido-principal">Saltar al contenido principal</a>
+
+  <div class="app-shell">
+
+    <header class="app-topbar documentos-topbar">
+      <a class="app-topbar-home" href="../dashboard.html" aria-label="Volver al inicio">
+        <span class="icon" data-icon="volver" aria-hidden="true"></span>
+      </a>
+      <div class="app-topbar-project">
+        <span class="app-topbar-eyebrow">B-Civil</span>
+        <span class="app-topbar-project-name">Documentos</span>
+      </div>
+    </header>
+
+    <div class="app-content">
+      <main id="contenido-principal" class="app-main documentos-main">
+
+        <!-- Pestañas: activa en negro -->
+        <div class="segmented documentos-tabs" role="tablist" aria-label="Secciones de Documentos">
+          <button type="button" class="segmented-option documentos-tab is-active" id="tab-generar" role="tab" aria-selected="true" aria-controls="seccion-generar">
+            Generar documento
+          </button>
+          <button type="button" class="segmented-option documentos-tab" id="tab-plantillas" role="tab" aria-selected="false" aria-controls="seccion-plantillas">
+            Plantillas
+          </button>
+        </div>
+
+        <!-- ================================================================
+             GENERAR DOCUMENTO (con IA, basado en tu bitácora)
+             ================================================================ -->
+        <section id="seccion-generar" class="documentos-seccion" role="tabpanel" aria-labelledby="tab-generar">
+
+          <!-- Indicador de pasos: regla de marcas que se llena -->
+          <nav class="doc-stepper" id="doc-stepper" aria-label="Pasos para generar un documento">
+            <div class="doc-stepper-track" aria-hidden="true">
+              <div class="doc-stepper-fill" id="doc-stepper-fill"></div>
+            </div>
+            <ol role="list">
+              <li class="doc-step is-active" data-step="1" id="doc-step-indicator-1">
+                <span class="doc-step-dot">1</span>
+                <span class="doc-step-label">Tipo</span>
+              </li>
+              <li class="doc-step" data-step="2" id="doc-step-indicator-2">
+                <span class="doc-step-dot">2</span>
+                <span class="doc-step-label">Datos</span>
+              </li>
+              <li class="doc-step" data-step="3" id="doc-step-indicator-3">
+                <span class="doc-step-dot">3</span>
+                <span class="doc-step-label">Revisión</span>
+              </li>
+              <li class="doc-step" data-step="4" id="doc-step-indicator-4">
+                <span class="doc-step-dot">4</span>
+                <span class="doc-step-label">Documento</span>
+              </li>
+            </ol>
+          </nav>
+
+          <div class="doc-wizard" id="doc-wizard">
+
+            <!-- Paso 1 -->
+            <section class="doc-step-panel" id="doc-panel-1" aria-labelledby="doc-panel-1-titulo">
+              <h2 id="doc-panel-1-titulo">¿Qué documento necesitas?</h2>
+              <p class="doc-panel-hint">Cada documento tiene su propia estructura y se arma solo con datos reales de tu proyecto.</p>
+
+              <!-- Generado por js/documentos/generador.js -->
+              <div class="doc-type-grid" id="doc-type-grid" role="list"></div>
+
+              <div class="card form-field doc-personalizado" id="doc-personalizado-field" hidden>
+                <label for="doc-personalizado-input">¿Qué documento necesitas exactamente?</label>
+                <textarea
+                  id="doc-personalizado-input"
+                  placeholder="Ej. Certificado de avance de obra para trámite de pago, con el porcentaje estimado de avance."
+                ></textarea>
+              </div>
+
+              <div class="doc-step-actions">
+                <button type="button" class="btn btn-primary btn-lg" id="doc-step-1-next" disabled>
+                  Continuar
+                </button>
+              </div>
+            </section>
+
+            <!-- Paso 2 -->
+            <section class="doc-step-panel" id="doc-panel-2" aria-labelledby="doc-panel-2-titulo" hidden>
+              <h2 id="doc-panel-2-titulo">Datos del documento</h2>
+              <p class="doc-panel-hint" id="doc-panel-2-hint">Elige el proyecto y completa los datos que pide este documento.</p>
+
+              <div class="card doc-card">
+                <div class="form-field">
+                  <label for="doc-proyecto">Proyecto</label>
+                  <select id="doc-proyecto" name="proyecto"></select>
+                </div>
+
+                <div class="doc-period-field" id="doc-period-field" hidden>
+                  <p class="doc-field-label" id="doc-periodo-label">Período a incluir</p>
+                  <div class="doc-period-options" role="group" aria-labelledby="doc-periodo-label">
+                    <button type="button" class="filter-chip" id="doc-periodo-dia" aria-pressed="false">Hoy</button>
+                    <button type="button" class="filter-chip is-active" id="doc-periodo-semana" aria-pressed="true">Última semana</button>
+                    <button type="button" class="filter-chip" id="doc-periodo-mes" aria-pressed="false">Último mes</button>
+                    <button type="button" class="filter-chip" id="doc-periodo-todo" aria-pressed="false">Todo el proyecto</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Campos propios del tipo de documento (generador.js) -->
+              <div class="card doc-card doc-campos" id="doc-campos" hidden></div>
+
+              <div class="doc-step-actions">
+                <button type="button" class="btn btn-secondary btn-lg" id="doc-step-2-back">Atrás</button>
+                <button type="button" class="btn btn-primary btn-lg" id="doc-step-2-next">Continuar</button>
+              </div>
+            </section>
+
+            <!-- Paso 3 -->
+            <section class="doc-step-panel" id="doc-panel-3" aria-labelledby="doc-panel-3-titulo" hidden>
+              <h2 id="doc-panel-3-titulo">Verificación y ajustes</h2>
+              <p class="doc-panel-hint">Revisa con qué información real se va a redactar el documento.</p>
+
+              <ul class="doc-verificacion" id="doc-verificacion" aria-live="polite"></ul>
+
+              <div class="card doc-card">
+                <div class="form-field">
+                  <label for="doc-instrucciones">Instrucciones adicionales (opcional)</label>
+                  <textarea
+                    id="doc-instrucciones"
+                    name="instrucciones"
+                    placeholder="Ej. Enfatiza los temas de seguridad, incluye solo la información de estructura…"
+                  ></textarea>
+                </div>
+              </div>
+
+              <div class="doc-step-actions">
+                <button type="button" class="btn btn-secondary btn-lg" id="doc-step-3-back">Atrás</button>
+                <button type="button" class="btn btn-accent btn-lg" id="doc-step-3-next">Generar borrador</button>
+              </div>
+            </section>
+
+            <!-- Paso 4 -->
+            <section class="doc-step-panel" id="doc-panel-4" aria-labelledby="doc-panel-4-titulo" hidden>
+              <h2 id="doc-panel-4-titulo">Tu documento</h2>
+
+              <p class="doc-pendientes" id="doc-pendientes" hidden></p>
+
+              <!-- Vista previa editable del documento (generador.js) -->
+              <div class="doc-preview" id="doc-preview" aria-live="polite"></div>
+
+              <div class="doc-export" id="doc-export">
+                <h3>Exportar</h3>
+                <div class="doc-export-actions">
+                  <button type="button" class="doc-export-option" id="doc-exportar-pdf">
+                    <span class="doc-export-badge doc-export-badge--pdf" aria-hidden="true">PDF</span>
+                    <span class="doc-export-text">
+                      <span class="doc-export-title">Exportar a PDF</span>
+                      <span class="doc-export-desc">Listo para enviar o imprimir</span>
+                    </span>
+                    <span class="icon" data-icon="descargar" aria-hidden="true"></span>
+                  </button>
+                  <button type="button" class="doc-export-option" id="doc-exportar-word">
+                    <span class="doc-export-badge doc-export-badge--word" aria-hidden="true">DOC</span>
+                    <span class="doc-export-text">
+                      <span class="doc-export-title">Exportar a Word</span>
+                      <span class="doc-export-desc">Para seguir editando</span>
+                    </span>
+                    <span class="icon" data-icon="descargar" aria-hidden="true"></span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="doc-step-actions doc-step-actions--static">
+                <button type="button" class="btn btn-secondary btn-lg" id="doc-step-4-back">Atrás</button>
+                <button type="button" class="btn btn-secondary btn-lg" id="doc-step-4-restart">Comenzar de nuevo</button>
+              </div>
+            </section>
+
+          </div>
+        </section>
+
+        <!-- ================================================================
+             PLANTILLAS (formatos de referencia)
+             ================================================================ -->
+        <section id="seccion-plantillas" class="documentos-seccion" role="tabpanel" aria-labelledby="tab-plantillas" hidden>
+
+          <p class="doc-panel-hint">
+            Formatos y documentos de referencia: APU, tablas de densidades y más, según se vayan agregando.
+          </p>
+
+          <ul class="plantillas-grid" id="plantillas-grid" role="list"></ul>
+
+          <div class="card empty-state" id="plantillas-empty-state">
+            <span class="icon-badge"><span class="icon" data-icon="documentos" aria-hidden="true"></span></span>
+            <p class="eyebrow">Próximamente</p>
+            <h3>Aún no hay plantillas disponibles</h3>
+            <p>Esta sección se irá llenando con formatos de referencia útiles para tu trabajo en obra.</p>
+          </div>
+
+        </section>
+
+      </main>
+    </div>
+
+    <nav class="app-nav" id="app-nav" aria-label="Navegación principal">
+      <ul class="app-nav-list">
+        <li class="app-nav-item">
+          <a class="app-nav-link" href="../dashboard.html" title="Inicio">
+            <span class="icon" data-icon="inicio" aria-hidden="true"></span>
+            <span class="app-nav-label">Inicio</span>
+          </a>
+        </li>
+        <li class="app-nav-item">
+          <a class="app-nav-link" href="../bitacora/bitacora.html" title="Bitácora">
+            <span class="icon" data-icon="bitacora" aria-hidden="true"></span>
+            <span class="app-nav-label">Bitácora</span>
+          </a>
+        </li>
+        <li class="app-nav-item">
+          <a class="app-nav-link" href="../proyectos/index.html" title="Proyectos">
+            <span class="icon" data-icon="proyectos" aria-hidden="true"></span>
+            <span class="app-nav-label">Proyectos</span>
+          </a>
+        </li>
+        <li class="app-nav-item">
+          <a class="app-nav-link" href="documentos.html" title="Documentos">
+            <span class="icon" data-icon="documentos" aria-hidden="true"></span>
+            <span class="app-nav-label">Documentos</span>
+          </a>
+        </li>
+        <li class="app-nav-item">
+          <a class="app-nav-link" href="../chat/asistente.html" title="Asistente">
+            <span class="icon" data-icon="asistente" aria-hidden="true"></span>
+            <span class="app-nav-label">Asistente</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/4.0.0/jspdf.umd.min.js"></script>
+  <script type="module" src="../../js/documentos/generador.js" defer></script>
+  <script type="module" src="../../js/sw-register.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Proyectos — B-Civil</title>
+  <meta name="description" content="Tus proyectos: busca y abre el proyecto en el que estás trabajando.">
+  <meta name="theme-color" content="#F4F3F0">
+
+  <link rel="icon" href="../../img/icons/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../img/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../img/icons/favicon-16x16.png">
+  <link rel="manifest" href="../../manifest.json">
+  <link rel="apple-touch-icon" href="../../img/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="B-Civil">
+
+  <link rel="stylesheet" href="../../css/main.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+  <link rel="stylesheet" href="../../css/icons.css">
+  <link rel="stylesheet" href="../../css/app-shell.css">
+  <link rel="stylesheet" href="../../css/proyectos.css">
+</head>
+<body class="app-body proyectos-body app-has-dock">
+
+  <a class="skip-link" href="#contenido-principal">Saltar al contenido principal</a>
+
+  <div class="app-shell">
+
+    <header class="app-topbar proyectos-topbar">
+      <a class="app-topbar-home" href="../dashboard.html" aria-label="Volver al inicio">
+        <span class="icon" data-icon="volver" aria-hidden="true"></span>
+      </a>
+      <div class="app-topbar-project">
+        <span class="app-topbar-eyebrow">B-Civil</span>
+        <span class="app-topbar-project-name">Proyectos</span>
+      </div>
+      <button type="button" class="topbar-action-btn" id="proyectos-nuevo-btn">
+        <span class="icon" data-icon="agregar" aria-hidden="true"></span>
+        <span>Nuevo</span>
+      </button>
+    </header>
+
+    <div class="app-content">
+      <main id="contenido-principal" class="app-main proyectos-main">
+
+        <div class="proyectos-hero">
+          <h1 class="proyectos-title">Tus proyectos</h1>
+          <p class="proyectos-count" id="proyectos-count" aria-live="polite"></p>
+        </div>
+
+        <form class="search-form" role="search" aria-label="Buscar proyectos">
+          <label for="buscar-proyectos" class="visually-hidden">Buscar por nombre o ubicación</label>
+          <span class="icon search-form-icon" data-icon="buscar" aria-hidden="true"></span>
+          <input
+            type="search"
+            id="buscar-proyectos"
+            name="q"
+            placeholder="Buscar proyecto"
+            autocomplete="off"
+            enterkeyhint="search"
+          >
+          <button type="submit" class="visually-hidden">Buscar</button>
+        </form>
+
+        <ul class="projects-grid" role="list" id="projects-grid"></ul>
+
+        <div class="card empty-state" id="empty-state" hidden>
+          <span class="icon-badge icon-badge--accent"><span class="icon" data-icon="proyectos" aria-hidden="true"></span></span>
+          <p class="eyebrow" id="empty-state-eyebrow">Sin resultados</p>
+          <h3 id="empty-state-title">No se encontraron proyectos</h3>
+          <p id="empty-state-description">Intenta con otro término de búsqueda.</p>
+          <a class="btn btn-primary" href="#" id="empty-state-create-btn" hidden>Crear mi primer proyecto</a>
+        </div>
+
+      </main>
+    </div>
+
+    <nav class="app-nav" id="app-nav" aria-label="Navegación principal">
+      <ul class="app-nav-list">
+        <li class="app-nav-item">
+          <a class="app-nav-link" href="../dashboard.html" title="Inicio">
+            <span class="icon" data-icon="inicio" aria-hidden="true"></span>
+            <span class="app-nav-label">Inicio</span>
+          </a>
+        </li>
+        <li class="app-nav-item">
+          <a class="app-nav-link" href="../bitacora/bitacora.html" title="Bitácora">
+            <span class="icon" data-icon="bitacora" aria-hidden="true"></span>
+            <span class="app-nav-label">Bitácora</span>
+          </a>
+        </li>
+        <li class="app-nav-item">
+          <a class="app-nav-link" href="index.html" title="Proyectos">
+            <span class="icon" data-icon="proyectos" aria-hidden="true"></span>
+            <span class="app-nav-label">Proyectos</span>
+          </a>
+        </li>
+        <li class="app-nav-item">
+          <a class="app-nav-link" href="../documentos/documentos.html" title="Documentos">
+            <span class="icon" data-icon="documentos" aria-hidden="true"></span>
+            <span class="app-nav-label">Documentos</span>
+          </a>
+        </li>
+        <li class="app-nav-item">
+          <a class="app-nav-link" href="../chat/asistente.html" title="Asistente">
+            <span class="icon" data-icon="asistente" aria-hidden="true"></span>
+            <span class="app-nav-label">Asistente</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+  </div>
+
+  <script type="module" src="../../js/proyectos/proyectos.js" defer></script>
+  <script type="module" src="../../js/registro-global.js" defer></script>
+  <script type="module" src="../../js/sw-register.js" defer></script>
+</body>
+</html>

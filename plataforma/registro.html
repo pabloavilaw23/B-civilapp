@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Crear cuenta — B-Civil</title>
+  <meta name="description" content="Crea tu cuenta en B-Civil y comienza a registrar la información de tus proyectos.">
+
+  <!-- PWA -->
+  <link rel="icon" href="img/icons/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="img/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="img/icons/favicon-16x16.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#080B11">
+  <link rel="apple-touch-icon" href="img/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="B-Civil">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <!-- Tipografía -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
+
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body class="auth-body">
+
+  <a class="skip-link" href="#contenido-principal">Saltar al formulario de registro</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="./" aria-label="Ir a la bienvenida">
+        <img src="img/icons/icon-192.png" alt="">
+        <span class="logo-text">B-Civil</span>
+      </a>
+    </div>
+  </header>
+
+  <main id="contenido-principal" class="auth-main">
+    <div class="container auth-container">
+
+      <section class="auth-card auth-card--wide" aria-labelledby="registro-titulo">
+        <div class="auth-logo">
+          <img src="img/icons/icon-192.png" alt="B-Civil">
+        </div>
+
+        <h1 id="registro-titulo">Crear cuenta</h1>
+        <p class="auth-subtitle">Comienza a registrar la información de tus proyectos de obra.</p>
+
+        <form class="auth-form" id="registro-form" novalidate>
+
+          <div class="form-field">
+            <label for="registro-nombre">Nombre completo</label>
+            <input
+              type="text"
+              id="registro-nombre"
+              name="nombre"
+              autocomplete="name"
+              required
+              aria-required="true"
+            >
+          </div>
+
+          <div class="form-field">
+            <label for="registro-email">Correo electrónico</label>
+            <input
+              type="email"
+              id="registro-email"
+              name="email"
+              autocomplete="email"
+              inputmode="email"
+              spellcheck="false"
+              autocapitalize="off"
+              required
+              aria-required="true"
+            >
+          </div>
+
+          <div class="form-field">
+            <label for="registro-password">Contraseña</label>
+            <div class="password-field">
+              <input
+                type="password"
+                id="registro-password"
+                name="password"
+                autocomplete="new-password"
+                required
+                aria-required="true"
+              >
+              <button
+                type="button"
+                class="toggle-password"
+                id="toggle-registro-password"
+                aria-pressed="false"
+                aria-controls="registro-password"
+              >
+                Mostrar contraseña
+              </button>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="registro-password-confirm">Confirmar contraseña</label>
+            <div class="password-field">
+              <input
+                type="password"
+                id="registro-password-confirm"
+                name="password_confirm"
+                autocomplete="new-password"
+                required
+                aria-required="true"
+              >
+              <button
+                type="button"
+                class="toggle-password"
+                id="toggle-registro-password-confirm"
+                aria-pressed="false"
+                aria-controls="registro-password-confirm"
+              >
+                Mostrar contraseña
+              </button>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="registro-codigo">Código de invitación</label>
+            <input
+              type="text"
+              id="registro-codigo"
+              name="codigo_invitacion"
+              autocomplete="off"
+              autocapitalize="characters"
+              spellcheck="false"
+              placeholder="Ej: OBRA-7K3M-Q9TX"
+              aria-describedby="registro-codigo-ayuda"
+              required
+              aria-required="true"
+            >
+            <small id="registro-codigo-ayuda" class="field-hint">Por ahora el acceso es solo por invitación. Si no tienes un código, solicítalo al administrador.</small>
+          </div>
+
+          <div class="form-field form-field-checkbox">
+            <input
+              type="checkbox"
+              id="registro-terminos"
+              name="acepta_terminos"
+              required
+              aria-required="true"
+            >
+            <label for="registro-terminos">
+              Acepto los <a href="legal/terminos.html" id="link-terminos" target="_blank" rel="noopener">Términos y condiciones</a>
+              y la <a href="legal/privacidad.html" id="link-privacidad" target="_blank" rel="noopener">Política de privacidad</a>.
+            </label>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block">Crear cuenta</button>
+
+        </form>
+
+        <p class="auth-switch">
+          ¿Ya tienes una cuenta?
+          <a href="login.html">Iniciar sesión</a>
+        </p>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="site-footer site-footer-minimal">
+    <div class="container">
+      <p class="footer-copy">&copy; 2026 B-Civil. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <script type="module" src="js/auth/registro.js" defer></script>
+  <script src="js/auth-header-elevation.js" defer></script>
+</body>
+</html>

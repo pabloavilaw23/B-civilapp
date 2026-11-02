@@ -1,0 +1,231 @@
+/* ==========================================================================
+   LEGAL.CSS — Términos, Privacidad y Tratamiento de datos
+   Páginas públicas (se abren también sin sesión iniciada): marca
+   arriba, pestañas para pasar entre los tres documentos y el texto en
+   una tarjeta con tipografía de lectura cómoda.
+   ========================================================================== */
+
+.legal-body {
+  min-height: 100vh;
+  background-color: var(--color-paper);
+  background-image: radial-gradient(
+    120% 55% at 50% 105%,
+    rgba(255, 201, 166, 0.45) 0%,
+    rgba(255, 232, 217, 0.2) 40%,
+    transparent 70%
+  );
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+/* --------------------------------------------------------------------------
+   CABECERA
+   -------------------------------------------------------------------------- */
+.legal-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background-color: rgba(244, 243, 240, 0.88);
+  backdrop-filter: saturate(160%) blur(14px);
+  -webkit-backdrop-filter: saturate(160%) blur(14px);
+}
+
+.legal-topbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: calc(var(--space-3) + env(safe-area-inset-top, 0px)) var(--space-4) var(--space-3);
+}
+
+.legal-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-md);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+}
+
+.legal-brand img {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 11px;
+  box-shadow: var(--shadow-sm);
+}
+
+.legal-access {
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+/* --------------------------------------------------------------------------
+   CONTENIDO
+   -------------------------------------------------------------------------- */
+.legal-main {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: var(--space-3) var(--space-4) var(--space-6);
+}
+
+/* Pestañas entre documentos (enlaces con la forma de .segmented) */
+.legal-tabs {
+  margin-bottom: var(--space-5);
+}
+
+.legal-tabs .segmented-option {
+  display: grid;
+  place-items: center;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.legal-tabs .segmented-option[aria-current="page"] {
+  color: #FFFFFF;
+  background-color: var(--color-ink);
+}
+
+.legal-hero {
+  margin-bottom: var(--space-4);
+}
+
+.legal-eyebrow {
+  margin-bottom: var(--space-1);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-accent-ink);
+}
+
+.legal-hero h1 {
+  font-size: clamp(1.75rem, 7vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+.legal-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  margin-top: var(--space-3);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-ink-soft);
+}
+
+/* Aviso de borrador */
+.legal-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+  padding: var(--space-4);
+  background-color: var(--color-accent-soft);
+  border-radius: 20px;
+}
+
+.legal-notice p {
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--color-accent-ink);
+}
+
+.legal-notice-icon {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background-color: #FFFFFF;
+}
+
+.legal-notice-icon::before {
+  content: "";
+  width: 1rem;
+  height: 1rem;
+  background-color: var(--color-accent-ink);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7.5v5.5'/%3E%3Cpath d='M12 16.5h.01' stroke-width='2.6'/%3E%3C/svg%3E") center / contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7.5v5.5'/%3E%3Cpath d='M12 16.5h.01' stroke-width='2.6'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+/* Texto legal: medida y altura de línea para lectura larga */
+.legal-content {
+  padding: var(--space-5);
+}
+
+.legal-section + .legal-section {
+  margin-top: var(--space-5);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--color-line);
+}
+
+.legal-section h2 {
+  margin-bottom: var(--space-2);
+  font-size: var(--text-md);
+  font-weight: 800;
+  letter-spacing: -0.015em;
+}
+
+.legal-section p {
+  font-size: var(--text-base);
+  line-height: 1.7;
+  color: var(--color-ink-soft);
+}
+
+.legal-related {
+  margin-top: var(--space-5);
+  padding-inline: var(--space-2);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+}
+
+.legal-related a,
+.legal-footer a {
+  font-weight: 700;
+  color: var(--color-ink);
+  border-bottom: 1px solid var(--color-line-strong);
+}
+
+/* --------------------------------------------------------------------------
+   PIE
+   -------------------------------------------------------------------------- */
+.legal-footer {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: var(--space-5) var(--space-4) calc(var(--space-6) + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--color-line);
+}
+
+.legal-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.legal-footer-links a {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-ink-soft);
+  border-bottom: 0;
+}
+
+.legal-footer-links a:hover {
+  color: var(--color-ink);
+}
+
+@media (min-width: 640px) {
+  .legal-main {
+    padding-top: var(--space-5);
+  }
+
+  .legal-content {
+    padding: var(--space-7);
+  }
+}

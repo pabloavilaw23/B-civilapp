@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>B-Civil — Iniciar sesión</title>
+  <meta name="description" content="B-Civil: plataforma de control, bitácora y gestión técnica en obra.">
+
+  <!--
+    Entrada animada solo en la primera carga de la sesión del navegador.
+    Se ejecuta antes del primer pintado para evitar parpadeos.
+    No interactúa con login.js.
+  -->
+  <script>
+    (function () {
+      try {
+        if (sessionStorage.getItem('bc-splash-visto')) {
+          document.documentElement.classList.add('bc-no-splash');
+        } else {
+          sessionStorage.setItem('bc-splash-visto', '1');
+        }
+      } catch (e) { /* almacenamiento no disponible: se muestra la entrada */ }
+    })();
+  </script>
+
+  <!-- PWA -->
+  <link rel="icon" href="img/icons/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="img/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="img/icons/favicon-16x16.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0B0D11">
+  <link rel="apple-touch-icon" href="img/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="B-Civil">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <!-- Fondo de obra: se pide de inmediato para que llegue con la entrada -->
+  <link rel="preload" as="image" href="img/bg-obra-hero.jpg">
+
+  <!--
+    Tipografía de la marca:
+    Archivo Expanded (ancho 125) para "B-CIVIL" y títulos,
+    IBM Plex Mono para "INGENIERÍA · CONSTRUCCIÓN",
+    Inter para formularios y lectura.
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,600;125,700;125,800&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap">
+
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body class="auth-body auth-body--splash">
+
+  <a class="skip-link" href="#login-form">Saltar al formulario de acceso</a>
+
+  <main id="contenido-principal" class="auth-split">
+
+    <!-- Columna izquierda: marca -->
+    <section class="auth-hero" aria-label="B-Civil">
+
+      <div class="brand-lockup">
+        <!-- Isotipo B-Civil -->
+        <svg class="brand-iso" viewBox="0 0 540 380" aria-hidden="true" focusable="false">
+          <g fill="none" stroke="currentColor" stroke-width="14" stroke-linejoin="miter">
+            <path d="M112 334V92L204 26V322"/>
+            <path d="M234 326V82L430 208V352"/>
+            <path d="M334 352V198L388 210"/>
+          </g>
+          <path d="M144 190L182 168V326L144 331Z" fill="currentColor"/>
+          <rect class="brand-iso-accent" x="350" y="216" width="30" height="136"/>
+          <path d="M10 372L300 348L530 372Z" fill="currentColor"/>
+        </svg>
+
+        <p class="brand-wordmark" aria-label="B-Civil">
+          <span aria-hidden="true">B</span><span class="brand-dash" aria-hidden="true"></span><span aria-hidden="true">CIVIL</span>
+        </p>
+        <p class="brand-tagline">Ingeniería <span aria-hidden="true">·</span> Construcción</p>
+      </div>
+
+      <p class="auth-hero-lead">Plataforma de control, bitácora y gestión técnica en obra.</p>
+    </section>
+
+    <!-- Columna derecha: acceso -->
+    <section class="auth-panel" aria-labelledby="login-titulo">
+
+      <h1 id="login-titulo">Iniciar sesión</h1>
+      <p class="auth-subtitle">Ingresa con tu cuenta para continuar.</p>
+
+      <form class="auth-form" id="login-form" novalidate>
+
+        <div class="form-field">
+          <label for="login-email">Correo electrónico</label>
+          <input
+            type="email"
+            id="login-email"
+            name="email"
+            autocomplete="email"
+            inputmode="email"
+            spellcheck="false"
+            autocapitalize="off"
+            required
+            aria-required="true"
+          >
+        </div>
+
+        <div class="form-field">
+          <label for="login-password">Contraseña</label>
+          <div class="password-field">
+            <input
+              type="password"
+              id="login-password"
+              name="password"
+              autocomplete="current-password"
+              required
+              aria-required="true"
+            >
+            <button
+              type="button"
+              class="toggle-password"
+              id="toggle-login-password"
+              aria-pressed="false"
+              aria-controls="login-password"
+            >
+              Mostrar contraseña
+            </button>
+          </div>
+        </div>
+
+        <div class="form-field form-field-inline">
+          <a class="link-secondary" href="#" id="link-recuperar-contrasena">¿Olvidaste tu contraseña?</a>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">Ingresar</button>
+
+      </form>
+
+      <p class="auth-switch">
+        ¿No tienes una cuenta?
+        <a href="registro.html">Crear cuenta</a>
+      </p>
+
+    </section>
+
+  </main>
+
+  <footer class="site-footer site-footer-minimal">
+    <p class="footer-copy">&copy; 2026 B-Civil. Todos los derechos reservados.</p>
+  </footer>
+
+  <!-- Si ya hay sesión guardada, entra directo al dashboard -->
+  <script type="module" src="js/auth/redirigir-si-sesion.js"></script>
+  <script type="module" src="js/auth/login.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Cargando bitácora… — B-Civil</title>
+  <meta name="description" content="Historia cronológica del proyecto: registros escritos, fotografías y notas de voz agrupados por día.">
+  <meta name="theme-color" content="#F4F3F0">
+
+  <link rel="icon" href="../../img/icons/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../img/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../img/icons/favicon-16x16.png">
+  <link rel="manifest" href="../../manifest.json">
+  <link rel="apple-touch-icon" href="../../img/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="B-Civil">
+
+  <link rel="stylesheet" href="../../css/main.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+  <link rel="stylesheet" href="../../css/icons.css">
+  <link rel="stylesheet" href="../../css/app-shell.css">
+  <link rel="stylesheet" href="../../css/bitacora.css">
+
+  <!-- jsPDF: lo usa exportar-bitacora.js para exportar en PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+</head>
+<body class="app-body bitacora-body app-has-dock">
+
+  <a class="skip-link" href="#contenido-principal">Saltar al contenido principal</a>
+
+  <div class="app-shell">
+
+    <!-- Cabecera: volver al inicio · proyecto · exportar -->
+    <header class="app-topbar bitacora-topbar">
+      <a class="app-topbar-home" href="../dashboard.html" aria-label="Volver al inicio">
+        <span class="icon" data-icon="volver" aria-hidden="true"></span>
+      </a>
+      <div class="app-topbar-project">
+        <span class="app-topbar-eyebrow">Bitácora</span>
+        <h1 class="app-topbar-project-name" id="bitacora-proyecto-nombre">Cargando proyecto…</h1>
+      </div>
+      <button type="button" class="bitacora-export-btn" id="bitacora-exportar-btn">
+        <span class="icon" data-icon="descargar" aria-hidden="true"></span>
+        <span class="bitacora-export-label">Exportar</span>
+      </button>
+    </header>
+
+    <div class="app-content">
+      <main id="contenido-principal" class="app-main bitacora-main">
+
+        <div id="bitacora-contenido">
+
+          <!-- Resumen de la semana (datos reales, timeline.js) -->
+          <section class="card bitacora-summary" aria-label="Resumen de la última semana">
+            <div class="bitacora-summary-hero">
+              <span class="stat-number" id="bitacora-stat-total">—</span>
+              <span class="stat-label">registros esta semana</span>
+            </div>
+            <div class="bitacora-summary-side" role="group">
+              <div class="bitacora-summary-item">
+                <span class="icon-badge"><span class="icon" data-icon="fotografia" aria-hidden="true"></span></span>
+                <span>
+                  <span class="bitacora-summary-value" id="bitacora-stat-fotos">—</span>
+                  <span class="bitacora-summary-label">con fotografía</span>
+                </span>
+              </div>
+              <div class="bitacora-summary-item">
+                <span class="icon-badge"><span class="icon" data-icon="reloj" aria-hidden="true"></span></span>
+                <span>
+                  <span class="bitacora-summary-value" id="bitacora-stat-ultimo">—</span>
+                  <span class="bitacora-summary-label">desde el último</span>
+                </span>
+              </div>
+            </div>
+          </section>
+
+          <!-- Búsqueda y filtros -->
+          <div class="bitacora-toolbar">
+            <form class="search-form" role="search" aria-label="Buscar en la bitácora">
+              <label for="buscar-bitacora" class="visually-hidden">Buscar por palabra clave</label>
+              <span class="icon search-form-icon" data-icon="buscar" aria-hidden="true"></span>
+              <input
+                type="search"
+                id="buscar-bitacora"
+                name="q"
+                placeholder="Buscar en la bitácora"
+                autocomplete="off"
+                enterkeyhint="search"
+              >
+              <button type="submit" class="visually-hidden">Buscar</button>
+            </form>
+
+            <div class="filter-group" role="group" aria-label="Filtrar por tipo de registro">
+              <button type="button" class="filter-chip is-active" id="filtro-todos" aria-pressed="true">Todos</button>
+              <button type="button" class="filter-chip" id="filtro-texto" aria-pressed="false">Novedades</button>
+              <button type="button" class="filter-chip" id="filtro-fotografia" aria-pressed="false">Fotografías</button>
+              <button type="button" class="filter-chip" id="filtro-nota-voz" aria-pressed="false">Notas de voz</button>
+              <button type="button" class="filter-chip" id="filtro-ensayo" aria-pressed="false">Ensayos</button>
+              <button type="button" class="filter-chip" id="filtro-sst" aria-pressed="false">Eventos SST</button>
+              <button type="button" class="filter-chip" id="filtro-avance" aria-pressed="false">Avances</button>
+            </div>
+
+            <div class="period-selector">
+              <div class="filter-group" role="group" aria-label="Período rápido">
+                <button type="button" class="filter-chip filter-chip--quiet is-active" id="periodo-todo" aria-pressed="true">Todo</button>
+                <button type="button" class="filter-chip filter-chip--quiet" id="periodo-semana" aria-pressed="false">Última semana</button>
+                <button type="button" class="filter-chip filter-chip--quiet" id="periodo-mes" aria-pressed="false">Último mes</button>
+              </div>
+
+              <!-- Rango personalizado: plegado por defecto para no ocupar espacio en el teléfono -->
+              <details class="period-custom">
+                <summary>
+                  <span class="icon" data-icon="calendario" aria-hidden="true"></span>
+                  Rango de fechas
+                </summary>
+                <form class="period-form" aria-label="Seleccionar rango de fechas personalizado">
+                  <div class="form-field">
+                    <label for="periodo-desde">Desde</label>
+                    <input type="date" id="periodo-desde" name="desde">
+                  </div>
+                  <div class="form-field">
+                    <label for="periodo-hasta">Hasta</label>
+                    <input type="date" id="periodo-hasta" name="hasta">
+                  </div>
+                  <button type="submit" class="btn btn-primary">Aplicar</button>
+                </form>
+              </details>
+            </div>
+          </div>
+
+          <!-- Línea de tiempo (timeline.js) -->
+          <section class="bitacora-timeline" aria-label="Registros de la bitácora" id="bitacora-timeline"></section>
+
+          <div class="card empty-state bitacora-empty" id="bitacora-empty-state" hidden>
+            <span class="icon-badge"><span class="icon" data-icon="bitacora" aria-hidden="true"></span></span>
+            <p class="eyebrow" id="bitacora-empty-eyebrow">Sin resultados</p>
+            <h3 id="bitacora-empty-title">No se encontraron registros</h3>
+            <p id="bitacora-empty-description">Intenta con otro término de búsqueda, cambia el filtro o ajusta el período seleccionado.</p>
+          </div>
+
+        </div>
+
+        <div class="card empty-state bitacora-empty" id="bitacora-sin-proyecto" hidden>
+          <span class="icon-badge"><span class="icon" data-icon="proyectos" aria-hidden="true"></span></span>
+          <p class="eyebrow">Proyecto no encontrado</p>
+          <h3>No pudimos encontrar este proyecto</h3>
+          <p>Es posible que haya sido eliminado o que no tengas acceso a él.</p>
+          <a class="btn btn-primary" href="../proyectos/index.html">Ver proyectos</a>
+        </div>
+
+      </main>
+    </div>
+
+    <!-- Navegación flotante -->
+    <nav class="app-nav" id="app-nav" aria-label="Navegación principal">
+      <ul class="app-nav-list">
+        <li class="app-nav-item">
+          <a class="app-nav-link" href="../dashboard.html" title="Inicio">
+            <span class="icon" data-icon="inicio" aria-hidden="true"></span>
+            <span class="app-nav-label">Inicio</span>
+          </a>
+        </li>
+        <li class="app-nav-item">
+          <a class="app-nav-link" href="bitacora.html" title="Bitácora">
+            <span class="icon" data-icon="bitacora" aria-hidden="true"></span>
+            <span class="app-nav-label">Bitácora</span>
+          </a>
+        </li>
+        <li class="app-nav-item">
+          <a class="app-nav-link" href="../proyectos/index.html" title="Proyectos">
+            <span class="icon" data-icon="proyectos" aria-hidden="true"></span>
+            <span class="app-nav-label">Proyectos</span>
+          </a>
+        </li>
+        <li class="app-nav-item">
+          <a class="app-nav-link" href="../documentos/documentos.html" title="Documentos">
+            <span class="icon" data-icon="documentos" aria-hidden="true"></span>
+            <span class="app-nav-label">Documentos</span>
+          </a>
+        </li>
+        <li class="app-nav-item">
+          <a class="app-nav-link" href="../chat/asistente.html" title="Asistente">
+            <span class="icon" data-icon="asistente" aria-hidden="true"></span>
+            <span class="app-nav-label">Asistente</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+  </div>
+
+  <!-- Detalle de un registro (timeline.js) -->
+  <div class="entry-detail-overlay modal-overlay" id="entry-detail-overlay" hidden>
+    <div class="entry-detail-dialog modal-dialog" role="dialog" aria-modal="true" aria-labelledby="entry-detail-titulo">
+      <button type="button" class="modal-close" id="entry-detail-close">Cerrar</button>
+
+      <p class="eyebrow" id="entry-detail-fecha"></p>
+      <h2 id="entry-detail-titulo"></h2>
+
+      <p class="entry-detail-text" id="entry-detail-texto"></p>
+
+      <div class="form-field" id="entry-detail-edit-field" hidden>
+        <label for="entry-detail-edit-textarea">Editar contenido</label>
+        <textarea id="entry-detail-edit-textarea"></textarea>
+      </div>
+
+      <ul class="entry-detail-photos" role="list" id="entry-detail-photos"></ul>
+
+      <div class="modal-actions" id="entry-detail-view-actions">
+        <button type="button" class="btn btn-secondary" id="entry-detail-edit-btn">Editar</button>
+        <button type="button" class="btn btn-secondary settings-danger-btn" id="entry-detail-delete-btn">Eliminar</button>
+      </div>
+
+      <div class="modal-actions" id="entry-detail-edit-actions" hidden>
+        <button type="button" class="btn btn-primary" id="entry-detail-save-btn">Guardar cambios</button>
+        <button type="button" class="btn btn-secondary" id="entry-detail-cancel-edit-btn">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exportar: se exporta el período seleccionado en pantalla -->
+  <div class="modal-overlay" id="bitacora-exportar-modal" hidden>
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="bitacora-exportar-titulo">
+      <h2 id="bitacora-exportar-titulo" class="modal-title">Exportar bitácora</h2>
+      <p class="modal-subtitle">
+        Período: <strong id="bitacora-exportar-periodo-label">Todo el período</strong>
+      </p>
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn-primary" id="bitacora-exportar-pdf-btn">Exportar a PDF</button>
+        <button type="button" class="btn btn-secondary" id="bitacora-exportar-word-btn">Exportar a Word</button>
+        <button type="button" class="btn btn-secondary bitacora-cancel" id="bitacora-exportar-cancelar-btn">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="../../js/bitacora/timeline.js" defer></script>
+  <script type="module" src="../../js/registro-global.js" defer></script>
+  <script type="module" src="../../js/sw-register.js" defer></script>
+</body>
+</html>

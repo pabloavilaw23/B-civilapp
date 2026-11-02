@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Papelera — B-Civil</title>
+  <meta name="description" content="Proyectos eliminados: restaura o elimina definitivamente. Se borran automáticamente después de 15 días.">
+  <meta name="theme-color" content="#F4F3F0">
+
+  <link rel="icon" href="../../img/icons/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../img/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../img/icons/favicon-16x16.png">
+  <link rel="manifest" href="../../manifest.json">
+  <link rel="apple-touch-icon" href="../../img/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="B-Civil">
+
+  <link rel="stylesheet" href="../../css/main.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+  <link rel="stylesheet" href="../../css/icons.css">
+  <link rel="stylesheet" href="../../css/app-shell.css">
+  <link rel="stylesheet" href="../../css/papelera.css">
+</head>
+<body class="app-body papelera-body">
+
+  <a class="skip-link" href="#contenido-principal">Saltar al contenido principal</a>
+
+  <div class="app-shell">
+
+    <header class="app-topbar">
+      <a class="app-topbar-home" href="../configuracion.html" aria-label="Volver a configuración">
+        <span class="icon" data-icon="volver" aria-hidden="true"></span>
+      </a>
+      <div class="app-topbar-project">
+        <span class="app-topbar-eyebrow">Cuenta</span>
+        <h1 class="app-topbar-project-name">Papelera</h1>
+      </div>
+    </header>
+
+    <div class="app-content">
+      <main id="contenido-principal" class="app-main papelera-main">
+
+        <p class="papelera-hint">
+          <span class="icon" data-icon="reloj" aria-hidden="true"></span>
+          <span>Los proyectos eliminados se guardan aquí <strong>15 días</strong> y luego se borran para siempre, con sus registros, fotos y notas de voz.</span>
+        </p>
+
+        <p class="papelera-loading" id="papelera-loading-note">Cargando elementos eliminados…</p>
+
+        <section class="trash-list-section" aria-label="Proyectos eliminados">
+
+          <ul class="trash-list" id="trash-list" role="list" hidden></ul>
+
+          <div class="card empty-state" id="trash-empty-state" hidden>
+            <span class="icon-badge"><span class="icon" data-icon="papelera" aria-hidden="true"></span></span>
+            <p class="eyebrow">Papelera vacía</p>
+            <h3>No hay elementos eliminados</h3>
+            <p>Los proyectos que elimines aparecerán aquí durante 15 días.</p>
+          </div>
+
+        </section>
+
+      </main>
+    </div>
+
+    <nav class="app-nav" id="app-nav" aria-label="Navegación principal">
+      <ul class="app-nav-list">
+        <li class="app-nav-item">
+          <a class="app-nav-link" href="../dashboard.html" title="Inicio">
+            <span class="icon" data-icon="inicio" aria-hidden="true"></span>
+            <span class="app-nav-label">Inicio</span>
+          </a>
+        </li>
+        <li class="app-nav-item">
+          <a class="app-nav-link" href="../bitacora/bitacora.html" title="Bitácora">
+            <span class="icon" data-icon="bitacora" aria-hidden="true"></span>
+            <span class="app-nav-label">Bitácora</span>
+          </a>
+        </li>
+        <li class="app-nav-item">
+          <a class="app-nav-link" href="../proyectos/index.html" title="Proyectos">
+            <span class="icon" data-icon="proyectos" aria-hidden="true"></span>
+            <span class="app-nav-label">Proyectos</span>
+          </a>
+        </li>
+        <li class="app-nav-item">
+          <a class="app-nav-link" href="../documentos/documentos.html" title="Documentos">
+            <span class="icon" data-icon="documentos" aria-hidden="true"></span>
+            <span class="app-nav-label">Documentos</span>
+          </a>
+        </li>
+        <li class="app-nav-item">
+          <a class="app-nav-link" href="../chat/asistente.html" title="Asistente">
+            <span class="icon" data-icon="asistente" aria-hidden="true"></span>
+            <span class="app-nav-label">Asistente</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+  </div>
+
+  <script type="module" src="../../js/papelera/papelera.js" defer></script>
+  <script type="module" src="../../js/sw-register.js" defer></script>
+</body>
+</html>

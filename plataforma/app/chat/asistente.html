@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
+  <title>Asistente — B-Civil</title>
+  <meta name="description" content="Consulta información real de tu proyecto en un espacio de conversación con IA.">
+  <meta name="theme-color" content="#F4F3F0">
+
+  <link rel="icon" href="../../img/icons/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../img/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../img/icons/favicon-16x16.png">
+  <link rel="manifest" href="../../manifest.json">
+  <link rel="apple-touch-icon" href="../../img/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="B-Civil">
+
+  <link rel="stylesheet" href="../../css/main.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+  <link rel="stylesheet" href="../../css/icons.css">
+  <link rel="stylesheet" href="../../css/app-shell.css">
+  <link rel="stylesheet" href="../../css/asistente.css">
+</head>
+<body class="app-body asistente-body">
+
+  <!--
+    Pantalla de conversación: sin barra de navegación flotante (encima
+    del teclado taparía lo que se escribe). Se vuelve con el botón ←.
+  -->
+
+  <a class="skip-link" href="#assistant-input">Ir a escribir una consulta</a>
+
+  <div class="asistente-shell">
+
+    <header class="app-topbar asistente-topbar">
+      <a class="app-topbar-home" href="../dashboard.html" aria-label="Volver al inicio">
+        <span class="icon" data-icon="volver" aria-hidden="true"></span>
+      </a>
+
+      <div class="app-topbar-project">
+        <span class="app-topbar-eyebrow asistente-eyebrow">
+          <span class="asistente-live-dot" aria-hidden="true"></span>
+          Asistente
+        </span>
+        <h1 class="app-topbar-project-name" id="assistant-project-name">Selecciona un proyecto</h1>
+      </div>
+
+      <div class="context-menu" id="assistant-project-switcher">
+        <button
+          type="button"
+          class="pill-btn asistente-switch-btn"
+          id="assistant-project-trigger"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          <span class="icon" data-icon="proyectos" aria-hidden="true"></span>
+          <span class="asistente-switch-label">Cambiar</span>
+        </button>
+      </div>
+    </header>
+
+    <main id="contenido-principal" class="asistente-main">
+
+      <section class="assistant-panel" id="assistant-panel" aria-label="Conversación con el asistente">
+
+        <div class="assistant-conversation" id="assistant-conversation">
+
+          <div class="assistant-empty-state" id="assistant-empty-state">
+            <span class="icon-badge icon-badge--accent assistant-empty-icon">
+              <span class="icon" data-icon="asistente" aria-hidden="true"></span>
+            </span>
+            <h2>¿Qué necesitas saber <span>de tu obra?</span></h2>
+            <p>Pregúntame sobre tus registros o pídeme un documento: informes, actas, oficios, reportes de incapacidad y más.</p>
+
+            <p class="assistant-suggestions-title">Prueba con</p>
+            <ul class="assistant-suggestions" role="list" id="assistant-suggestions">
+              <!-- Generado por js/chat/asistente.js -->
+            </ul>
+          </div>
+
+          <ol class="assistant-messages" id="assistant-messages" role="log" aria-live="polite" hidden></ol>
+
+        </div>
+
+        <form class="assistant-composer" id="assistant-composer">
+          <label for="assistant-input" class="visually-hidden">Escribe tu consulta</label>
+          <textarea
+            id="assistant-input"
+            name="consulta"
+            rows="1"
+            placeholder="Pregunta sobre tu obra…"
+            enterkeyhint="send"
+          ></textarea>
+          <button type="submit" class="assistant-send-btn" id="assistant-send" aria-label="Enviar" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <line x1="12" y1="19" x2="12" y2="5"></line>
+              <polyline points="5 12 12 5 19 12"></polyline>
+            </svg>
+          </button>
+        </form>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- jsPDF: descarga del PDF de los documentos generados en el chat -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/4.0.0/jspdf.umd.min.js" defer></script>
+  <script type="module" src="../../js/chat/asistente.js" defer></script>
+  <script type="module" src="../../js/sw-register.js" defer></script>
+</body>
+</html>
